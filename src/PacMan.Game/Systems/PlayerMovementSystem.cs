@@ -1,5 +1,5 @@
+using PacMan.ECS;
 using PacMan.Game.Components;
-using PacMan.Game.Ecs;
 
 namespace PacMan.Game.Systems;
 

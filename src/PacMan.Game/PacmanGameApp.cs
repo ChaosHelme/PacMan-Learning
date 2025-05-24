@@ -1,5 +1,5 @@
+using PacMan.ECS;
 using PacMan.Game.Components;
-using PacMan.Game.Ecs;
 using PacMan.Game.Input;
 using PacMan.Game.Rendering;
 using PacMan.Game.Systems;

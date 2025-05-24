@@ -1,4 +1,4 @@
-namespace PacMan.Game.Ecs;
+namespace PacMan.ECS;
 
 public class World
 {

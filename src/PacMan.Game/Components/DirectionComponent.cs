@@ -1,4 +1,4 @@
-using PacMan.Game.Ecs;
+using PacMan.ECS;
 using PacMan.Game.Systems;
 
 namespace PacMan.Game.Components;

@@ -1,5 +1,5 @@
+using PacMan.ECS;
 using PacMan.Game.Components;
-using PacMan.Game.Ecs;
 using Spectre.Console;
 
 namespace PacMan.Game.Rendering;

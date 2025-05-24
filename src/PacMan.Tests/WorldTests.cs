@@ -1,6 +1,6 @@
+using PacMan.ECS;
 using PacMan.Game;
 using PacMan.Game.Components;
-using PacMan.Game.Ecs;
 
 namespace PacMan.Tests;
 

@@ -1,7 +1,7 @@
 using FluentAssertions;
+using PacMan.ECS;
 using PacMan.Game;
 using PacMan.Game.Components;
-using PacMan.Game.Ecs;
 using PacMan.Game.Systems;
 
 namespace PacMan.Tests;

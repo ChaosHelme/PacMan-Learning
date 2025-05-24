@@ -1,4 +1,4 @@
-using PacMan.Game.Ecs;
+using PacMan.ECS;
 
 namespace PacMan.Game.Rendering;
 

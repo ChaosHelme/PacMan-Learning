@@ -1,3 +1,3 @@
-namespace PacMan.Game.Ecs;
+namespace PacMan.ECS;
 
 public interface IComponent { }
