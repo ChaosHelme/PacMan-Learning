@@ -30,7 +30,6 @@ public class PlayerScoreAndLifeIntegrationTests
         _world.AddComponent(_player, new PlayerComponent());
         _world.AddComponent(_player, new PositionComponent(1, 1));
         _world.AddComponent(_player, new ScoreComponent(0));
-        _world.AddComponent(_player, new LivesComponent(3));
     }
 
     [Test]
@@ -40,13 +39,10 @@ public class PlayerScoreAndLifeIntegrationTests
         var dot = _world.CreateEntity();
         _world.AddComponent(dot, new DotComponent());
         _world.AddComponent(dot, new PositionComponent(2, 1));
-        _maze.RemoveDot(2, 1); // Ensure maze and ECS are in sync
-        _maze.RemoveDot(1, 1); // Remove dot from player start
 
         // Move player right to (2,1)
-        var playerDirectionComponent = _world.CreateEntity();
+        _world.AddComponent(_player, new DirectionComponent(Direction.Right));
         _playerMoveSystem.Execute();
-        //_moveSystem.MovePlayer(Direction.Right);
 
         // Process game logic (should eat dot)
         _logicSystem.Execute();
@@ -66,6 +62,7 @@ public class PlayerScoreAndLifeIntegrationTests
         var ghost = _world.CreateEntity();
         _world.AddComponent(ghost, new GhostComponent());
         _world.AddComponent(ghost, new PositionComponent(1, 1));
+        _world.AddComponent(_player, new LivesComponent(3));
 
         // Player and ghost at same position
         _logicSystem.Execute();
