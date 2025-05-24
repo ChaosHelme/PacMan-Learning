@@ -111,23 +111,16 @@ This helps ensure that every change is automatically built and tested, keeping t
 ### 📋 Workflow Overview
 
 ```mermaid
-gitGraph
-commit id: "Push or PR to main"
-commit id: "Checkout code"
-commit id: "Setup .NET 9"
-commit id: "dotnet restore"
-commit id: "dotnet build"
-commit id: "dotnet test"
-commit id: "CI Status"
+timeline
+    title .NET CI Workflow
+    Push or PR to main : Triggered by push or pull request to main branch
+    Checkout code : actions/checkout@v4
+    Setup .NET 9 : actions/setup-dotnet@v4
+    Restore dependencies : dotnet restore src/
+    Build : dotnet build src/ --no-restore
+    Test : dotnet test src/ --no-build --verbosity normal
+    CI Status : Reports success or failure to GitHub
 ```
-
-- **Push or PR to main**: Triggers the workflow.
-- **Checkout code**: Uses `actions/checkout@v4` to get the latest code.
-- **Setup .NET 9**: Installs the required .NET SDK.
-- **dotnet restore**: Restores project dependencies.
-- **dotnet build**: Builds the project.
-- **dotnet test**: Runs all automated tests.
-- **CI Status**: Reports success or failure back to GitHub.
 
 ### 📄 Workflow File
 
