@@ -8,6 +8,7 @@ This project is a modern, testable, and extensible implementation of the classic
 - **SOLID principles**
 - **The Entity Component System (ECS) pattern**
 - **Unit and integration testing**
+- **Rich console UI with Spectre.Console**
 
 ---
 
@@ -19,6 +20,7 @@ This repository is intended as a **learning resource** for developers interested
 - Understanding and implementing the ECS pattern
 - Building testable and modular applications
 - Experimenting with console rendering and input handling
+- Leveraging Spectre.Console for beautiful, modern console UIs
 
 ---
 
@@ -46,101 +48,49 @@ By exploring this project, you will:
 
 ---
 
-## 🏗️ PacMan.Game class diagram
+## 🖥️ Console UI Powered by Spectre.Console
+
+This project uses [Spectre.Console](https://spectreconsole.net) to create a beautiful, modern, and interactive console user interface.
+
+**Why Spectre.Console?**
+- Enables rich text formatting (colors, styles, emojis, tables, panels, and more).
+- Provides widgets like tables, trees, progress bars, charts, and custom panels for a delightful console experience.
+- Makes it easy to display game states, scores, and messages in a visually appealing way.
+- Supports both simple ASCII and advanced emoji/Unicode rendering for cross-platform compatibility.
+
+**Example Features Used:**
+- Styled text and colored output for game messages and status.
+- Panels and markup for the game over screen and UI elements.
+- Emoji and ASCII rendering modes, switchable via the `--render-mode` command-line option.
+
+**Getting Started with Spectre.Console:**
+
+```
+dotnet add package Spectre.Console
+```
+
+Learn more:
+- [Spectre.Console Documentation](https://spectreconsole.net)
+- [Spectre.Console GitHub](https://github.com/spectreconsole/spectre.console)
+- [Spectre.Console Examples](https://spectreconsole.net/examples)
+
+## 🏗️ Project Structure
 
 ```mermaid
-classDiagram
-    class World {
-        +CreateEntity() Entity
-        +AddComponent<T>(Entity, T)
-        +ReplaceComponent<T>(Entity, T)
-        +RemoveComponent<T>(Entity)
-        +GetComponent<T>(Entity) T
-        +GetEntitiesWith<T>() IEnumerable~Entity~
-    }
-    class Entity {
-        +int Id
-    }
-
-    class IComponent {
-        <<interface>>
-    }
-
-    class IUniqueComponent {
-        <<interface>>
-    }
-
-    class PositionComponent {
-        +int X
-        +int Y
-    }
-    PositionComponent ..|> IComponent
-
-    class PlayerTag {
-    }
-    PlayerTag ..|> IComponent
-
-    class GhostTag {
-    }
-    GhostTag ..|> IComponent
-
-    class DotTag {
-    }
-    DotTag ..|> IComponent
-
-    class WallTag {
-    }
-    WallTag ..|> IComponent
-
-    class ScoreComponent {
-        +int Score
-    }
-    ScoreComponent ..|> IComponent
-
-    class LivesComponent {
-        +int Lives
-    }
-    LivesComponent ..|> IComponent
-
-    class Maze {
-        +IsWalkable(int, int) bool
-        +IsWallAt(int, int) bool
-        +RemoveDot(int, int)
-        +HasDot(int, int) bool
-    }
-
-    class InputSystem {
-        +Direction LastDirection
-        +Poll()
-    }
-
-    class MovementSystem {
-        +MovePlayer(Direction)
-        +MoveGhosts()
-    }
-
-    class GameLogicSystem {
-        +bool GameOver
-        +Process()
-    }
-
-    class RenderingSystem {
-        +Render()
-        +ShowGameOver(int)
-    }
-
-%% Relationships
-World "1" o-- "*" Entity
-World "1" o-- "*" IComponent
-IUniqueComponent <|.. IComponent
-InputSystem ..> Direction
-MovementSystem ..> World
-MovementSystem ..> Maze
-GameLogicSystem ..> World
-GameLogicSystem ..> Maze
-RenderingSystem ..> World
-RenderingSystem ..> Maze
+graph TD
+    A[PacMan.ECS]
+    B[PacMan.Game]
+    C[PacMan.Tests]
+    B-->A
+    C-->A
+    C-->B
 ```
+
+### PacMan.ECS
+
+### PacMan.Game
+
+### PacMan.Tests
 
 ---
 
@@ -196,6 +146,7 @@ RenderingSystem ..> Maze
 - [Game Programming Patterns: ECS](https://www.simplilearn.com/entity-component-system-introductory-guide-article)
 - [SOLID Principles in C#](https://scotch.io/bar-talk/s-o-l-i-d-the-first-five-principles-of-object-oriented-design)
 - [Clean Code by Robert C. Martin](https://www.oreilly.com/library/view/clean-code/9780136083238/)
+- [Spectre Console Documentation](https://spectreconsole.net/)
 - [NUnit Documentation](https://docs.nunit.org/)
 - [FluentAssertions Documentation](https://fluentassertions.com/)
 

@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PacMan.Tests", "PacMan.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PacMan.Game", "PacMan.Game\PacMan.Game.csproj", "{A3F40C7A-5555-4E96-97FD-0EAE9AB20C70}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PacMan.ECS", "PacMan.ECS\PacMan.ECS.csproj", "{11980476-A300-4B2F-9C87-A3287407113D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{A3F40C7A-5555-4E96-97FD-0EAE9AB20C70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3F40C7A-5555-4E96-97FD-0EAE9AB20C70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3F40C7A-5555-4E96-97FD-0EAE9AB20C70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11980476-A300-4B2F-9C87-A3287407113D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11980476-A300-4B2F-9C87-A3287407113D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11980476-A300-4B2F-9C87-A3287407113D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11980476-A300-4B2F-9C87-A3287407113D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
