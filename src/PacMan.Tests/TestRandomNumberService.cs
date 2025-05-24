@@ -4,7 +4,7 @@ namespace PacMan.Tests;
 
 public class TestRandomNumberService : IRandomNumberService
 {
-    public int RandomNumber(int min, int max) => throw new NotImplementedException();
+    public int RandomNumber(int min, int max) => 0;
 
-    public float RandomSingle() => throw new NotImplementedException();
+    public float RandomSingle() => 0f;
 }
