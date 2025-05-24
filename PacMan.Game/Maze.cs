@@ -2,7 +2,7 @@ namespace PacMan.Game;
 
 public class Maze
 {
-    public const int Height = 20, Width = 25;
+    public const int Height = 21, Width = 25;
     private readonly bool[,] _walls = new bool[Height, Width];
     private readonly bool[,] _dots = new bool[Height, Width];
 
