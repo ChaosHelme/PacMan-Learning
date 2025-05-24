@@ -95,6 +95,46 @@ graph TD
 
 ---
 
+## ⚙️ Continuous Integration with GitHub Actions
+
+This project uses **GitHub Actions** for automated Continuous Integration (CI).  
+Every push or pull request to the `main` branch will automatically:
+
+1. **Check out the code**
+2. **Set up .NET 9**
+3. **Restore dependencies**
+4. **Build the project**
+5. **Run all tests**
+
+This helps ensure that every change is automatically built and tested, keeping the codebase healthy and reliable.
+
+### 📋 Workflow Overview
+
+```mermaid
+gitGraph
+commit id: "Push or PR to main"
+commit id: "Checkout code"
+commit id: "Setup .NET 9"
+commit id: "dotnet restore"
+commit id: "dotnet build"
+commit id: "dotnet test"
+commit id: "CI Status"
+```
+
+- **Push or PR to main**: Triggers the workflow.
+- **Checkout code**: Uses `actions/checkout@v4` to get the latest code.
+- **Setup .NET 9**: Installs the required .NET SDK.
+- **dotnet restore**: Restores project dependencies.
+- **dotnet build**: Builds the project.
+- **dotnet test**: Runs all automated tests.
+- **CI Status**: Reports success or failure back to GitHub.
+
+### 📄 Workflow File
+
+The workflow is defined in [dotnet.yaml](/.github/workflows/dotnet.yml)
+
+---
+
 ## 🕹️ How to Run
 
 1. **Clone the repository:**
