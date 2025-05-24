@@ -14,7 +14,7 @@ public class GameRunner(
     IGameArtAssets gameArtAssets,
     CancellationTokenSource cts) : IGameRunner
 {
-    public async Task Run()
+    public async Task Run(int frameDelay)
     {
         AnsiConsole.Clear();
         AnsiConsole.Cursor.Hide();
@@ -78,7 +78,7 @@ public class GameRunner(
             
             renderingProvider.Render();
             
-            await Task.Delay(100);
+            await Task.Delay(frameDelay);
         }
         
         var finalScore = world.GetComponent<ScoreComponent>(player).Score;

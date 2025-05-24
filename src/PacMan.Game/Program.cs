@@ -1,14 +1,15 @@
 ﻿using PacMan.Game;
-using PacMan.Game.Input;
-using PacMan.Game.Menu;
-using PacMan.Game.Rendering;
+using PacMan.Game.Bootstrap;
+using PacMan.Game.Extensions;
 
 var cts = new CancellationTokenSource();
-var app = new PacmanGameApp(
-    args,
-    new ConsoleInputProvider(),
-    new ConsoleRenderingProvider(),
-    new MainMenu(),
-    new OptionsMenu(),
-    cts);
-await app.Run();
+
+var renderMode = CommandLineOptions.GetRenderMode(args);
+
+var app = new PacmanGameAppBuilder()
+    .WithRenderMode(renderMode)
+    .WithFrameDelay(100)
+    .AddConsoleInputAndRenderProvider()
+    .Build();
+
+await app.Start(cts);
