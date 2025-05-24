@@ -1,9 +1,9 @@
-# Pac-Man ECS Console Game
+# Pac-Man-Learning
 
-Welcome to the **Pac-Man ECS Console Game** repository!  
+Welcome to the **Pac-Man-Learning** repository!  
 This project is a modern, testable, and extensible implementation of the classic Pac-Man game in C#, designed for the command line and built to help you learn:
 
-- **C# best practices**
+- **C#**
 - **Clean Code**
 - **SOLID principles**
 - **The Entity Component System (ECS) pattern**
@@ -45,6 +45,7 @@ By exploring this project, you will:
 - **Write and run tests**: Discover how to write unit, integration, and E2E tests for a console application
 - **Handle command-line arguments**: Learn how to make your apps configurable and user-friendly
 - **Work with console input/output**: See how to create interactive C# console applications
+- **Use Spectre.Console**: Build visually appealing console UIs with modern .NET tools
 
 ---
 
@@ -121,25 +122,78 @@ graph TD
     dotnet test
     ```
 
-    - The project includes unit, integration, and end-to-end tests using [NUnit](https://nunit.org/) and [FluentAssertions](https://fluentassertions.com/).
+    - The project includes unit and integration tests using [NUnit](https://nunit.org/) and [FluentAssertions](https://fluentassertions.com/).
 
 ---
 
-## 🏆 What You'll Learn
+## 🌱 Suggestions for Extensions & New Features
 
-- **ECS Pattern:**  
-  How to build games and apps with maximum flexibility by separating data, identity, and behavior.
-
-- **Clean Code & SOLID:**  
-  How to write code that is easy to read, test, extend, and maintain.
-
-- **Testing:**  
-  How to write robust tests for both individual units and the whole application.
-
-- **C# Console Programming:**  
-  How to handle input, output, and rendering in a console environment.
+This project is a great starting point for learning, but there are many ways to extend it—both to more closely match the original Pac-Man gameplay and to explore advanced ECS concepts. Here are some ideas for further development:
 
 ---
+
+### 🕹️ Classic Gameplay Features
+
+- **Power Pellets / Energizers**  
+  Add large dots ("power pellets") that let Pac-Man eat ghosts for a short time, as in the original game.
+- **Ghost AI Personalities**  
+  Implement unique movement patterns for each ghost (Blinky, Pinky, Inky, Clyde) to mimic their original behaviors.
+- **Bonus Fruits & Items**  
+  Occasionally spawn bonus items (fruits) for extra points.
+- **Warp Tunnels**  
+  Let Pac-Man and ghosts warp around the sides of the maze.
+- **Multiple Levels & Increasing Difficulty**  
+  Advance to new mazes or increase ghost speed as the player progresses.
+- **Cutscenes/Intermissions**  
+  Add short animations between levels for fun and authenticity.
+- **High Score Table**  
+  Track and display high scores.
+- **Sound Effects**  
+  Add simple sound cues for eating dots, power pellets, ghosts, and losing lives.
+
+---
+
+### 🛠️ Additional ECS & Advanced Features
+
+- **Component Pooling**  
+  Implement a pool for frequently created/destroyed components to improve performance and reduce garbage collection.
+- **Event System**  
+  Add an event or messaging system for decoupled communication between systems (e.g., "Pac-Man ate power pellet" event).
+- **System Scheduling/Prioritization**  
+  Allow systems to run in a specific order or only when needed.
+- **Entity Queries**  
+  Support more flexible queries (e.g., all entities with Position and Velocity, but without Stunned).
+- **Prefab/Blueprint System**  
+  Define reusable templates for entities (e.g., different ghost types or maze layouts).
+- **Serialization & Save/Load**  
+  Save and restore game state (entities and components) for persistence or debugging.
+- **Inspector/Debug Console**  
+  Add a debug view to inspect entities, components, and systems at runtime.
+- **Component Removal Events**  
+  Allow systems to react when components are removed from entities.
+
+---
+
+### 💡 Other Learning and Experimentation Ideas
+
+- **Multithreaded Systems**  
+  Explore running independent systems in parallel for performance.
+- **Dependency Injection**  
+  Use DI to further decouple systems and improve testability.
+- **UI Improvements**  
+  Add menus, pause screens, or settings using Spectre.Console's advanced widgets.
+- **Port to GUI**  
+  Try porting the ECS core to a GUI framework (like Avalonia, WinForms, or Unity) to see how the architecture scales.
+- **AI or Bot Player**  
+  Implement a simple AI to play Pac-Man or control ghosts for testing.
+
+---
+
+These extensions will not only make your Pac-Man game more complete and fun, but will also deepen your understanding of C#, ECS, and clean architecture.  
+Feel free to [contribute](#-contributing) your own ideas or improvements!
+
+---
+
 
 ## 📚 Further Reading
 
