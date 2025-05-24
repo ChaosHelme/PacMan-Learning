@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PacMan.Tests", "PacMan.Tests\PacMan.Tests.csproj", "{7BBE7C79-0F12-4151-B062-1E835FA7583B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PacMan.Ecs.Console", "PacMan.Ecs.Console\PacMan.Ecs.Console.csproj", "{A3F40C7A-5555-4E96-97FD-0EAE9AB20C70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PacMan.Game", "PacMan.Game\PacMan.Game.csproj", "{A3F40C7A-5555-4E96-97FD-0EAE9AB20C70}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

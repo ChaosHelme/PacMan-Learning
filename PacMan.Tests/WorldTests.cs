@@ -1,5 +1,6 @@
-using PacMan.Ecs.Console;
-using PacMan.Ecs.Console.Components;
+using PacMan.Game;
+using PacMan.Game.Components;
+using PacMan.Game.Ecs;
 
 namespace PacMan.Tests;
 
@@ -40,9 +41,9 @@ public class WorldTests
     public void HasComponent_ReturnsTrueIfComponentExists()
     {
         var entity = _world.CreateEntity();
-        _world.AddComponent(entity, new PlayerTag());
+        _world.AddComponent(entity, new PlayerComponent());
 
-        _world.HasComponent<PlayerTag>(entity).Should().BeTrue();
+        _world.HasComponent<PlayerComponent>(entity).Should().BeTrue();
     }
 
     [Test]
@@ -50,10 +51,10 @@ public class WorldTests
     {
         var e1 = _world.CreateEntity();
         var e2 = _world.CreateEntity();
-        _world.AddComponent(e1, new PlayerTag());
+        _world.AddComponent(e1, new PlayerComponent());
         _world.AddComponent(e2, new GhostTag());
 
-        var players = _world.GetEntitiesWith<PlayerTag>().ToList();
+        var players = _world.GetEntitiesWith<PlayerComponent>().ToList();
         players.Should().Contain(e1);
         players.Should().NotContain(e2);
     }
@@ -62,9 +63,9 @@ public class WorldTests
     public void RemoveComponent_RemovesComponent()
     {
         var entity = _world.CreateEntity();
-        _world.AddComponent(entity, new PlayerTag());
-        _world.RemoveComponent<PlayerTag>(entity);
+        _world.AddComponent(entity, new PlayerComponent());
+        _world.RemoveComponent<PlayerComponent>(entity);
 
-        _world.HasComponent<PlayerTag>(entity).Should().BeFalse();
+        _world.HasComponent<PlayerComponent>(entity).Should().BeFalse();
     }
 }

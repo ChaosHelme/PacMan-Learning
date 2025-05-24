@@ -1,5 +1,5 @@
 using FluentAssertions;
-using PacMan.Ecs.Console;
+using PacMan.Game;
 
 namespace PacMan.Tests;
 

@@ -1,7 +1,8 @@
 using FluentAssertions;
-using PacMan.Ecs.Console;
-using PacMan.Ecs.Console.Components;
-using PacMan.Ecs.Console.Systems;
+using PacMan.Game;
+using PacMan.Game.Components;
+using PacMan.Game.Ecs;
+using PacMan.Game.Systems;
 
 namespace PacMan.Tests;
 
@@ -21,7 +22,7 @@ public class GameLogicSystemTests
         _logicSystem = new GameLogicSystem(_world, _maze);
 
         _player = _world.CreateEntity();
-        _world.AddComponent(_player, new PlayerTag());
+        _world.AddComponent(_player, new PlayerComponent());
         _world.AddComponent(_player, new PositionComponent(1, 1));
         _world.AddComponent(_player, new ScoreComponent(0));
         _world.AddComponent(_player, new LivesComponent(3));

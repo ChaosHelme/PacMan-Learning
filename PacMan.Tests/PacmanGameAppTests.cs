@@ -1,6 +1,6 @@
-using PacMan.Ecs.Console;
+using PacMan.Game;
 using FluentAssertions;
-using PacMan.Ecs.Console.Rendering;
+using PacMan.Game.Rendering;
 
 namespace PacMan.Tests;
 

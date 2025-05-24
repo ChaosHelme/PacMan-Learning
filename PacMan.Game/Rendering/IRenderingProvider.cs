@@ -1,0 +1,9 @@
+using PacMan.Game.Ecs;
+
+namespace PacMan.Game.Rendering;
+
+public interface IRenderingProvider
+{
+    void Initialize(World world, Maze maze);
+    void Render();
+}

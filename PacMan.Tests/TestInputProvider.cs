@@ -1,19 +1,13 @@
-using PacMan.Ecs.Console.Input;
-using PacMan.Ecs.Console.Systems;
+using PacMan.Game.Input;
+using PacMan.Game.Systems;
 
 namespace PacMan.Tests;
 
-public class TestInputProvider : IInputProvider
+public class TestInputProvider(IEnumerable<Direction> inputs) : IInputProvider
 {
-    private readonly Queue<Direction> _inputs;
+    private readonly Queue<Direction> _inputs = new(inputs);
 
-    public TestInputProvider(IEnumerable<Direction> inputs)
-    {
-        _inputs = new Queue<Direction>(inputs);
-    }
+    public Direction GetDirection() => _inputs.Count > 0 ? _inputs.Dequeue() : Direction.None;
 
-    public Direction GetDirection()
-    {
-        return _inputs.Count > 0 ? _inputs.Dequeue() : Direction.None;
-    }
+    public void AddInput(Direction direction) => _inputs.Enqueue(direction);
 }
