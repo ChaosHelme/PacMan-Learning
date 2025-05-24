@@ -1,7 +1,7 @@
-using PacMan.ECS;
 using FluentAssertions;
+using PacMan.ECS;
 
-namespace PacMan.Tests;
+namespace PacMan.Tests.ECS;
 
 [TestFixture]
 public class EntityTests

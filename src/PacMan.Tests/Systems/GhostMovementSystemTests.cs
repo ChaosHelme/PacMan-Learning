@@ -3,8 +3,9 @@ using PacMan.ECS;
 using PacMan.Game;
 using PacMan.Game.Components;
 using PacMan.Game.Systems;
+using PacMan.Tests.Services;
 
-namespace PacMan.Tests;
+namespace PacMan.Tests.Systems;
 
 [TestFixture]
 public class GhostMovementSystemTests

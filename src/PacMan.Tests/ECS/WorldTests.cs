@@ -1,12 +1,8 @@
+using FluentAssertions;
 using PacMan.ECS;
-using PacMan.Game;
 using PacMan.Game.Components;
 
-namespace PacMan.Tests;
-
-using NUnit.Framework;
-using FluentAssertions;
-
+namespace PacMan.Tests.ECS;
 
 [TestFixture]
 public class WorldTests

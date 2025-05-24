@@ -4,7 +4,7 @@ using PacMan.Game;
 using PacMan.Game.Components;
 using PacMan.Game.Systems;
 
-namespace PacMan.Tests;
+namespace PacMan.Tests.Systems;
 
 [TestFixture]
 public class GameLogicSystemTests

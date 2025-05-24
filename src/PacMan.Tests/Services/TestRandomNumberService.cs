@@ -1,6 +1,6 @@
 using PacMan.Game.Services;
 
-namespace PacMan.Tests;
+namespace PacMan.Tests.Services;
 
 public class TestRandomNumberService : IRandomNumberService
 {
