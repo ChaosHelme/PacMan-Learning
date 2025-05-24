@@ -39,7 +39,7 @@ public class PlayerMovementIntegrationTests
     }
 
     [Test]
-    public void PlayerKeepsMoving_IntoLastInputDirection()
+    public void PlayerKeepsMoving_ToLastInputDirection()
     {
         _testInputProvider.AddInput(Direction.Right);
         
@@ -65,5 +65,19 @@ public class PlayerMovementIntegrationTests
         inputComponent.Direction.Should().Be(Direction.None);
         playerPositionComponent.X.Should().Be(3);
         playerPositionComponent.Y.Should().Be(1);
+    }
+    
+    [Test]
+    public void MovePlayer_IntoWall_DoesNotUpdatePosition()
+    {
+        _testInputProvider.AddInput(Direction.Left);
+        
+        _inputSystem.Execute();
+        _playerDirectionSystem.Execute();
+        _playerMovementSystem.Execute();
+        
+        var playerEntity = _world.GetEntitiesWith<PlayerComponent>().Single();
+        
+        _world.GetComponent<PositionComponent>(playerEntity).Should().Be(new PositionComponent(1, 1));
     }
 }
