@@ -21,7 +21,7 @@ public class PlayerScoreAndLifeIntegrationTests
     {
         _world = new World();
         _maze = new Maze();
-        _ghostMoveSystem = new GhostMovementSystem(_world, _maze);
+        _ghostMoveSystem = new GhostMovementSystem(_world, _maze, new TestRandomNumberService());
         _playerMoveSystem = new PlayerMovementSystem(_world, _maze);
         _logicSystem = new GameLogicSystem(_world, _maze);
 

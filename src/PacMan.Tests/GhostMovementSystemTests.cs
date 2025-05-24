@@ -19,7 +19,7 @@ public class GhostMovementSystemTests
     {
         _world = new World();
         _maze = new Maze();
-        _moveSystem = new GhostMovementSystem(_world, _maze);
+        _moveSystem = new GhostMovementSystem(_world, _maze, new TestRandomNumberService());
 
         _player = _world.CreateEntity();
         _world.AddComponent(_player, new PlayerComponent());

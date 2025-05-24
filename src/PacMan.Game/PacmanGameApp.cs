@@ -2,6 +2,7 @@ using PacMan.ECS;
 using PacMan.Game.Components;
 using PacMan.Game.Input;
 using PacMan.Game.Rendering;
+using PacMan.Game.Services;
 using PacMan.Game.Systems;
 using Spectre.Console;
 
@@ -67,7 +68,7 @@ public class PacmanGameApp(string[] args, IInputProvider inputProvider, IRenderi
         executeSystems.Add(new InputSystem(world, inputProvider));
         executeSystems.Add(new PlayerDirectionSystem(world));
         executeSystems.Add(new PlayerMovementSystem(world, maze));
-        executeSystems.Add(new GhostMovementSystem(world, maze));
+        executeSystems.Add(new GhostMovementSystem(world, maze, new RandomNumberService()));
         executeSystems.Add(new GameLogicSystem(world, maze));
 
         // Game Loop
