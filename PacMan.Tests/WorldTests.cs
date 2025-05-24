@@ -52,7 +52,7 @@ public class WorldTests
         var e1 = _world.CreateEntity();
         var e2 = _world.CreateEntity();
         _world.AddComponent(e1, new PlayerComponent());
-        _world.AddComponent(e2, new GhostTag());
+        _world.AddComponent(e2, new GhostComponent());
 
         var players = _world.GetEntitiesWith<PlayerComponent>().ToList();
         players.Should().Contain(e1);

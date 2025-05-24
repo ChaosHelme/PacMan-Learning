@@ -47,7 +47,7 @@ public class GhostMovementSystemTests
     public void MoveGhosts_GhostMovesToValidPosition()
     {
         var ghost = _world.CreateEntity();
-        _world.AddComponent(ghost, new GhostTag());
+        _world.AddComponent(ghost, new GhostComponent());
         _world.AddComponent(ghost, new PositionComponent(1, 1));
 
         _moveSystem.Execute();

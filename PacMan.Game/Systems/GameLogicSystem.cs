@@ -21,18 +21,18 @@ public class GameLogicSystem : IExecuteSystem
         var playerPos = _world.GetComponent<PositionComponent>(player);
 
         // Collect dot
-        var dot = _world.GetEntitiesWith<DotTag, PositionComponent>()
+        var dot = _world.GetEntitiesWith<DotComponent, PositionComponent>()
             .FirstOrDefault(e => _world.GetComponent<PositionComponent>(e).Equals(playerPos));
         if (!dot.Equals(default(Entity)))
         {
-            _world.RemoveComponent<DotTag>(dot);
+            _world.RemoveComponent<DotComponent>(dot);
             _maze.RemoveDot(playerPos.X, playerPos.Y);
             var score = _world.GetComponent<ScoreComponent>(player);
             _world.ReplaceComponent(player, new ScoreComponent(score.Score + 10));
         }
 
         // Ghost collision
-        var ghosts = _world.GetEntitiesWith<GhostTag, PositionComponent>();
+        var ghosts = _world.GetEntitiesWith<GhostComponent, PositionComponent>();
         if (ghosts.Any(g => _world.GetComponent<PositionComponent>(g).Equals(playerPos)))
         {
             var lives = _world.GetComponent<LivesComponent>(player);
@@ -48,7 +48,7 @@ public class GameLogicSystem : IExecuteSystem
         }
 
         // Win condition
-        if (!_world.GetEntitiesWith<DotTag>().Any())
+        if (!_world.GetEntitiesWith<DotComponent>().Any())
             GameOver = true;
     }
 }

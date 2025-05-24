@@ -33,7 +33,7 @@ public class GameLogicSystemTests
     {
         // Place a dot at (1,1)
         var dot = _world.CreateEntity();
-        _world.AddComponent(dot, new DotTag());
+        _world.AddComponent(dot, new DotComponent());
         _world.AddComponent(dot, new PositionComponent(1, 1));
 
         _logicSystem.Execute();
@@ -47,7 +47,7 @@ public class GameLogicSystemTests
     {
         _world.AddComponent(_player, new PositionComponent(2, 2));
         var ghost = _world.CreateEntity();
-        _world.AddComponent(ghost, new GhostTag());
+        _world.AddComponent(ghost, new GhostComponent());
         _world.AddComponent(ghost, new PositionComponent(2, 2));
 
         _logicSystem.Execute();
@@ -61,7 +61,7 @@ public class GameLogicSystemTests
         _world.AddComponent(_player, new LivesComponent(1));
         _world.AddComponent(_player, new PositionComponent(2, 2));
         var ghost = _world.CreateEntity();
-        _world.AddComponent(ghost, new GhostTag());
+        _world.AddComponent(ghost, new GhostComponent());
         _world.AddComponent(ghost, new PositionComponent(2, 2));
 
         _logicSystem.Execute();

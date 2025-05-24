@@ -7,7 +7,7 @@ public class GhostMovementSystem(World world, Maze maze) : IExecuteSystem
 {
     public void Execute()
     {
-        var ghosts = world.GetEntitiesWith<GhostTag, PositionComponent>();
+        var ghosts = world.GetEntitiesWith<GhostComponent, PositionComponent>();
         var rand = new Random();
         foreach (var ghost in ghosts)
         {

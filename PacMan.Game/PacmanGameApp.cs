@@ -3,24 +3,32 @@ using PacMan.Game.Ecs;
 using PacMan.Game.Input;
 using PacMan.Game.Rendering;
 using PacMan.Game.Systems;
+using Spectre.Console;
 
 namespace PacMan.Game;
 
-public class PacmanGameApp(IInputProvider inputProvider, IRenderingProvider renderingProvider)
+public class PacmanGameApp(string[] args, IInputProvider inputProvider, IRenderingProvider renderingProvider, CancellationTokenSource cts)
 {
     public async Task Run()
     {
-        // Use _input.ReadLine()/ReadKey() and _output.WriteLine() instead of Console.ReadLine/WriteLine
-        // Game loop here...
+        IGameArtAssets gameArtAssets = CommandLineOptions.GetRenderMode(args) == RenderMode.Emoji 
+            ? new EmojiConsoleAssets() 
+            : new AsciiConsoleAssets();
+
+        // When emoji mode is active, we need to ensure to set the output encoding to UTF8
+        if (gameArtAssets is EmojiConsoleAssets)
+        {
+            System.Console.OutputEncoding = System.Text.Encoding.UTF8;
+        }
+        
         System.Console.Clear();
-        System.Console.OutputEncoding = System.Text.Encoding.UTF8;
         System.Console.CursorVisible = false;
 
         // ECS Setup
         var world = new World();
         var maze = new Maze();
         
-        renderingProvider.Initialize(world, maze);
+        renderingProvider.Initialize(world, maze, gameArtAssets);
 
         // Entities & Components
         var player = world.CreateEntity();
@@ -37,7 +45,7 @@ public class PacmanGameApp(IInputProvider inputProvider, IRenderingProvider rend
         foreach (var (gx, gy) in ghostPositions)
         {
             var ghost = world.CreateEntity();
-            world.AddComponent(ghost, new GhostTag());
+            world.AddComponent(ghost, new GhostComponent());
             world.AddComponent(ghost, new PositionComponent(gx, gy));
         }
 
@@ -48,35 +56,44 @@ public class PacmanGameApp(IInputProvider inputProvider, IRenderingProvider rend
                 if (!maze.IsWallAt(x, y) && maze.HasDot(x, y))
                 {
                     var dot = world.CreateEntity();
-                    world.AddComponent(dot, new DotTag());
+                    world.AddComponent(dot, new DotComponent());
                     world.AddComponent(dot, new PositionComponent(x, y));
                 }
             }
 
-        // Systems
-        var inputSystem = new InputSystem(world, inputProvider);
-        var playerDirectionSystem = new PlayerDirectionSystem(world);
-        var playerMovementSystem = new PlayerMovementSystem(world, maze);
-        var ghostMovementSystem = new GhostMovementSystem(world, maze);
-        var logicSystem = new GameLogicSystem(world, maze);
-        var renderSystem = new RenderingSystem(world, maze, renderingProvider);
+        ICollection<IExecuteSystem> executeSystems = [];
+        
+        // Systems (Order matters!)
+        executeSystems.Add(new InputSystem(world, inputProvider));
+        executeSystems.Add(new PlayerDirectionSystem(world));
+        executeSystems.Add(new PlayerMovementSystem(world, maze));
+        executeSystems.Add(new GhostMovementSystem(world, maze));
+        executeSystems.Add(new GameLogicSystem(world, maze));
 
         // Game Loop
-        while (!logicSystem.GameOver)
+        while (!cts.IsCancellationRequested)
         {
-            renderSystem.Render();
-            inputSystem.Execute();
+            foreach (var executeSystem in executeSystems)
+            {
+                executeSystem.Execute();
+            }
+            
             if (world.GetComponent<InputComponent>(inputEntity).Direction == Direction.Quit)
                 break;
             
-            playerDirectionSystem.Execute();
-            playerMovementSystem.Execute();
-            ghostMovementSystem.Execute();
-            logicSystem.Execute();
+            renderingProvider.Render();
             
             await Task.Delay(100);
         }
+        
         var finalScore = world.GetComponent<ScoreComponent>(player).Score;
-        renderSystem.ShowGameOver(finalScore);
+        AnsiConsole.Cursor.SetPosition(0, Maze.Height + 2);
+        AnsiConsole.Write(
+            new Panel($"[bold]Game Over![/]\nFinal Score: {finalScore}")
+                .Border(BoxBorder.Rounded)
+                .Header("[yellow]PAC-MAN[/]")
+        );
+        
+        AnsiConsole.Cursor.Show();
     }
 }

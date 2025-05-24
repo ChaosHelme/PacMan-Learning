@@ -1,3 +1,4 @@
+using FluentAssertions;
 using PacMan.Game;
 using PacMan.Game.Components;
 using PacMan.Game.Ecs;
@@ -5,16 +6,13 @@ using PacMan.Game.Systems;
 
 namespace PacMan.Tests.Integrations;
 
-using NUnit.Framework;
-using FluentAssertions;
-using System.Linq;
-
 [TestFixture]
 public class PlayerScoreAndLifeIntegrationTests
 {
     private World _world;
     private Maze _maze;
-    private GhostMovementSystem _moveSystem;
+    private GhostMovementSystem _ghostMoveSystem;
+    private PlayerMovementSystem _playerMoveSystem;
     private GameLogicSystem _logicSystem;
     private Entity _player;
 
@@ -23,7 +21,8 @@ public class PlayerScoreAndLifeIntegrationTests
     {
         _world = new World();
         _maze = new Maze();
-        _moveSystem = new GhostMovementSystem(_world, _maze);
+        _ghostMoveSystem = new GhostMovementSystem(_world, _maze);
+        _playerMoveSystem = new PlayerMovementSystem(_world, _maze);
         _logicSystem = new GameLogicSystem(_world, _maze);
 
         // Player setup
@@ -39,12 +38,14 @@ public class PlayerScoreAndLifeIntegrationTests
     {
         // Place a dot at (2,1)
         var dot = _world.CreateEntity();
-        _world.AddComponent(dot, new DotTag());
+        _world.AddComponent(dot, new DotComponent());
         _world.AddComponent(dot, new PositionComponent(2, 1));
         _maze.RemoveDot(2, 1); // Ensure maze and ECS are in sync
         _maze.RemoveDot(1, 1); // Remove dot from player start
 
         // Move player right to (2,1)
+        var playerDirectionComponent = _world.CreateEntity();
+        _playerMoveSystem.Execute();
         //_moveSystem.MovePlayer(Direction.Right);
 
         // Process game logic (should eat dot)
@@ -52,7 +53,7 @@ public class PlayerScoreAndLifeIntegrationTests
 
         // Assert
         _world.GetComponent<ScoreComponent>(_player).Score.Should().Be(10);
-        _world.GetEntitiesWith<DotTag, PositionComponent>()
+        _world.GetEntitiesWith<DotComponent, PositionComponent>()
             .Any(e => _world.GetComponent<PositionComponent>(e).Equals(new PositionComponent(2, 1)))
             .Should()
             .BeFalse();
@@ -63,7 +64,7 @@ public class PlayerScoreAndLifeIntegrationTests
     {
         // Place ghost at (1,1)
         var ghost = _world.CreateEntity();
-        _world.AddComponent(ghost, new GhostTag());
+        _world.AddComponent(ghost, new GhostComponent());
         _world.AddComponent(ghost, new PositionComponent(1, 1));
 
         // Player and ghost at same position
@@ -78,7 +79,7 @@ public class PlayerScoreAndLifeIntegrationTests
     {
         // Place ghost at (1,1)
         var ghost = _world.CreateEntity();
-        _world.AddComponent(ghost, new GhostTag());
+        _world.AddComponent(ghost, new GhostComponent());
         _world.AddComponent(ghost, new PositionComponent(1, 1));
         _world.AddComponent(_player, new LivesComponent(1));
 

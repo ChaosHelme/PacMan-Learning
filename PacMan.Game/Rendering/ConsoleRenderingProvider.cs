@@ -6,18 +6,15 @@ namespace PacMan.Game.Rendering;
 
 public class ConsoleRenderingProvider : IRenderingProvider
 {
-    private const string WallEmoji = "🟦";
-    private const string PlayerEmoji = "🟡";
-    private const string DotEmoji = "⚪";
-    private const string GhostEmoji = "👻";
-
     World _world = null!;
     Maze _maze = null!;
+    IGameArtAssets _assets = null!;
     
-    public void Initialize(World world, Maze maze)
+    public void Initialize(World world, Maze maze, IGameArtAssets assets)
     {
         _world = world;
         _maze = maze;
+        _assets = assets;
     }
 
     public void Render()
@@ -30,18 +27,18 @@ public class ConsoleRenderingProvider : IRenderingProvider
                 var pos = new PositionComponent(x, y);
                 var player = _world.GetEntitiesWith<PlayerComponent, PositionComponent>()
                     .FirstOrDefault(e => _world.GetComponent<PositionComponent>(e).Equals(pos));
-                var ghost = _world.GetEntitiesWith<GhostTag, PositionComponent>()
+                var ghost = _world.GetEntitiesWith<GhostComponent, PositionComponent>()
                     .FirstOrDefault(e => _world.GetComponent<PositionComponent>(e).Equals(pos));
                 var dot = _maze.HasDot(x, y);
 
                 if (_maze.IsWallAt(x, y))
-                    AnsiConsole.Write(WallEmoji);
+                    AnsiConsole.Write(_assets.WallArt);
                 else if (!player.Equals(default(Entity)) && _world.HasComponent<PlayerComponent>(player))
-                    AnsiConsole.Write(PlayerEmoji);
-                else if (!ghost.Equals(default(Entity)) && _world.HasComponent<GhostTag>(ghost))
-                    AnsiConsole.Write(GhostEmoji);
+                    AnsiConsole.Write(_assets.PlayerArt);
+                else if (!ghost.Equals(default(Entity)) && _world.HasComponent<GhostComponent>(ghost))
+                    AnsiConsole.Write(_assets.GhostArt);
                 else if (dot)
-                    AnsiConsole.Write(DotEmoji);
+                    AnsiConsole.Write(_assets.DotArt);
                 else
                     AnsiConsole.Write("  ");
             }
