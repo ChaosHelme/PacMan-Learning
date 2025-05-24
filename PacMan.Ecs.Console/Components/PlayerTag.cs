@@ -1,3 +1,3 @@
 namespace PacMan.Ecs.Console.Components;
 
-public record PlayerTag : IComponent;
+public sealed record PlayerTag : IComponent;

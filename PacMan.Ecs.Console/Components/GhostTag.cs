@@ -1,3 +1,3 @@
 namespace PacMan.Ecs.Console.Components;
 
-public record GhostTag : IComponent;
+public sealed record GhostTag : IComponent;

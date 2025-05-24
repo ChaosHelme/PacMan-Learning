@@ -1,3 +1,3 @@
 namespace PacMan.Ecs.Console.Components;
 
-public record ScoreComponent(int Score) : IComponent;
+public sealed record ScoreComponent(int Score) : IComponent;

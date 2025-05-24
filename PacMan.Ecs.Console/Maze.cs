@@ -8,8 +8,8 @@ public class Maze
 
     public Maze()
     {
-        for (int y = 0; y < Height; y++)
-            for (int x = 0; x < Width; x++)
+        for (var y = 0; y < Height; y++)
+            for (var x = 0; x < Width; x++)
             {
                 if (IsWall(x, y))
                     _walls[y, x] = true;

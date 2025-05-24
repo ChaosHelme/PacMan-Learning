@@ -13,23 +13,6 @@ public class MovementSystem
         _maze = maze;
     }
 
-    public void MovePlayer(Direction dir)
-    {
-        if (dir == Direction.None || dir == Direction.Quit) return;
-        var player = _world.GetEntitiesWith<PlayerTag, PositionComponent>().First();
-        var pos = _world.GetComponent<PositionComponent>(player);
-        var newPos = dir switch
-        {
-            Direction.Left => new PositionComponent(pos.X - 1, pos.Y),
-            Direction.Right => new PositionComponent(pos.X + 1, pos.Y),
-            Direction.Up => new PositionComponent(pos.X, pos.Y - 1),
-            Direction.Down => new PositionComponent(pos.X, pos.Y + 1),
-            _ => pos
-        };
-        if (_maze.IsWalkable(newPos.X, newPos.Y))
-            _world.AddComponent(player, newPos);
-    }
-
     public void MoveGhosts()
     {
         var ghosts = _world.GetEntitiesWith<GhostTag, PositionComponent>();

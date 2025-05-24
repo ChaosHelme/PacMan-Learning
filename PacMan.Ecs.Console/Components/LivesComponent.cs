@@ -1,3 +1,3 @@
 namespace PacMan.Ecs.Console.Components;
 
-public record LivesComponent(int Lives) : IComponent;
+public sealed record LivesComponent(int Lives) : IComponent;

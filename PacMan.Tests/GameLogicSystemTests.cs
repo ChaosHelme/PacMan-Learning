@@ -35,7 +35,7 @@ public class GameLogicSystemTests
         _world.AddComponent(dot, new DotTag());
         _world.AddComponent(dot, new PositionComponent(1, 1));
 
-        _logicSystem.Process();
+        _logicSystem.Execute();
 
         _world.GetComponent<ScoreComponent>(_player).Score.Should().Be(10);
         _maze.HasDot(1, 1).Should().BeFalse();
@@ -49,7 +49,7 @@ public class GameLogicSystemTests
         _world.AddComponent(ghost, new GhostTag());
         _world.AddComponent(ghost, new PositionComponent(2, 2));
 
-        _logicSystem.Process();
+        _logicSystem.Execute();
 
         _world.GetComponent<LivesComponent>(_player).Lives.Should().Be(2);
     }
@@ -63,7 +63,7 @@ public class GameLogicSystemTests
         _world.AddComponent(ghost, new GhostTag());
         _world.AddComponent(ghost, new PositionComponent(2, 2));
 
-        _logicSystem.Process();
+        _logicSystem.Execute();
 
         _logicSystem.GameOver.Should().BeTrue();
     }
@@ -76,7 +76,7 @@ public class GameLogicSystemTests
             foreach (var x in Enumerable.Range(0, Maze.Width))
                 _maze.RemoveDot(x, y);
 
-        _logicSystem.Process();
+        _logicSystem.Execute();
 
         _logicSystem.GameOver.Should().BeTrue();
     }

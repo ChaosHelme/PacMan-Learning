@@ -1,22 +1,16 @@
+using PacMan.Ecs.Console.Components;
+using PacMan.Ecs.Console.Input;
+
 namespace PacMan.Ecs.Console.Systems;
 
-public class InputSystem
+public class InputSystem(World world, IInputProvider inputProvider) : IExecuteSystem
 {
-    public Direction LastDirection { get; private set; } = Direction.None;
-
-    public void Poll()
+    public void Execute()
     {
-        if (!System.Console.KeyAvailable) return;
-        var key = System.Console.ReadKey(true).Key;
-        LastDirection = key switch
-        {
-            ConsoleKey.LeftArrow => Direction.Left,
-            ConsoleKey.RightArrow => Direction.Right,
-            ConsoleKey.UpArrow => Direction.Up,
-            ConsoleKey.DownArrow => Direction.Down,
-            ConsoleKey.Q => Direction.Quit,
-            _ => Direction.None
-        };
+        var inputEntity = world.GetUniqueComponentOwner<InputComponent>();
+        world.ReplaceComponent(inputEntity, new InputComponent(inputProvider.GetDirection()));
     }
 }
+
+
 public enum Direction { None, Left, Right, Up, Down, Quit }

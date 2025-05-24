@@ -1,3 +1,3 @@
 namespace PacMan.Ecs.Console.Components;
 
-public record DotTag : IComponent;
+public sealed record DotTag : IComponent;

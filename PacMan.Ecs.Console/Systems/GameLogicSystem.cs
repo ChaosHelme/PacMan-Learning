@@ -2,7 +2,7 @@ using PacMan.Ecs.Console.Components;
 
 namespace PacMan.Ecs.Console.Systems;
 
-public class GameLogicSystem
+public class GameLogicSystem : IExecuteSystem
 {
     private readonly World _world;
     private readonly Maze _maze;
@@ -14,7 +14,7 @@ public class GameLogicSystem
         _maze = maze;
     }
 
-    public void Process()
+    public void Execute()
     {
         var player = _world.GetEntitiesWith<PlayerTag, PositionComponent>().First();
         var playerPos = _world.GetComponent<PositionComponent>(player);

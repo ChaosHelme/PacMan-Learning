@@ -1,3 +1,3 @@
 namespace PacMan.Ecs.Console.Components;
 
-public record WallTag : IComponent;
+public sealed record WallTag : IComponent;
