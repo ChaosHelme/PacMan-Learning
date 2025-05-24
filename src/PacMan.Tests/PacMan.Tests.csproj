@@ -22,6 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\PacMan.ECS\PacMan.ECS.csproj" />
       <ProjectReference Include="..\PacMan.Game\PacMan.Game.csproj" />
     </ItemGroup>
 
