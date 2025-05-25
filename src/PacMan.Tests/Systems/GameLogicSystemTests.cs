@@ -28,10 +28,10 @@ public class GameLogicSystemTests
     public void Process_PlayerLosesLastLife_GameOver()
     {
         _world.AddComponent(_player, new LivesComponent(1));
-        _world.AddComponent(_player, new PositionComponent(2, 2));
+        _world.AddComponent(_player, new PositionComponent((2, 2)));
         var ghost = _world.CreateEntity();
         _world.AddComponent(ghost, new GhostComponent());
-        _world.AddComponent(ghost, new PositionComponent(2, 2));
+        _world.AddComponent(ghost, new PositionComponent((2, 2)));
 
         _logicSystem.Execute();
 
@@ -41,7 +41,7 @@ public class GameLogicSystemTests
     [Test]
     public void Process_NoMoreDots_GameOver()
     {
-        _world.AddComponent(_player, new PositionComponent(2, 2));
+        _world.AddComponent(_player, new PositionComponent((2, 2)));
         
         _logicSystem.Execute();
         

@@ -28,7 +28,7 @@ public class PlayerScoreAndLifeIntegrationTests
         // Player setup
         _player = _world.CreateEntity();
         _world.AddComponent(_player, new PlayerComponent());
-        _world.AddComponent(_player, new PositionComponent(1, 1));
+        _world.AddComponent(_player, new PositionComponent((1, 1)));
         _world.AddComponent(_player, new ScoreComponent(0));
     }
 
@@ -38,7 +38,7 @@ public class PlayerScoreAndLifeIntegrationTests
         // Place a dot at (2,1)
         var dot = _world.CreateEntity();
         _world.AddComponent(dot, new DotComponent());
-        _world.AddComponent(dot, new PositionComponent(2, 1));
+        _world.AddComponent(dot, new PositionComponent((2, 1)));
 
         // Move player right to (2,1)
         _world.AddComponent(_player, new DirectionComponent(Direction.Right));
@@ -50,7 +50,7 @@ public class PlayerScoreAndLifeIntegrationTests
         // Assert
         _world.GetComponent<ScoreComponent>(_player).Score.Should().Be(10);
         _world.GetEntitiesWith<DotComponent, PositionComponent>()
-            .Any(e => _world.GetComponent<PositionComponent>(e).Equals(new PositionComponent(2, 1)))
+            .Any(e => _world.GetComponent<PositionComponent>(e).Equals(new PositionComponent((2, 1))))
             .Should()
             .BeFalse();
     }
@@ -61,14 +61,14 @@ public class PlayerScoreAndLifeIntegrationTests
         // Place ghost at (1,1)
         var ghost = _world.CreateEntity();
         _world.AddComponent(ghost, new GhostComponent());
-        _world.AddComponent(ghost, new PositionComponent(1, 1));
+        _world.AddComponent(ghost, new PositionComponent((1, 1)));
         _world.AddComponent(_player, new LivesComponent(3));
 
         // Player and ghost at same position
         _logicSystem.Execute();
 
         _world.GetComponent<LivesComponent>(_player).Lives.Should().Be(2);
-        _world.GetComponent<PositionComponent>(_player).Should().Be(new PositionComponent(1, 1));
+        _world.GetComponent<PositionComponent>(_player).Should().Be(new PositionComponent((1, 1)));
     }
 
     [Test]
@@ -77,7 +77,7 @@ public class PlayerScoreAndLifeIntegrationTests
         // Place ghost at (1,1)
         var ghost = _world.CreateEntity();
         _world.AddComponent(ghost, new GhostComponent());
-        _world.AddComponent(ghost, new PositionComponent(1, 1));
+        _world.AddComponent(ghost, new PositionComponent((1, 1)));
         _world.AddComponent(_player, new LivesComponent(1));
 
         // Player and ghost at same position

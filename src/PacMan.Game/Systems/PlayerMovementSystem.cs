@@ -10,7 +10,7 @@ public class PlayerMovementSystem(World world, IMazeService mazeService) : IExec
     {
         var playerEntity = world.GetEntitiesWith<PlayerComponent>().Single();
         var currentPlayerDirection = world.GetComponent<DirectionComponent>(playerEntity).Direction;
-        var pos = world.GetComponent<PositionComponent>(playerEntity);
+        var pos = world.GetComponent<PositionComponent>(playerEntity).Position;
         
         if (currentPlayerDirection is Direction.None or Direction.Quit) return;
         
@@ -27,7 +27,7 @@ public class PlayerMovementSystem(World world, IMazeService mazeService) : IExec
 		mazeService.TryGetWarpDestination(newPos.X, newPos.Y, out var finalPosition);
         if (isWalkable)
         {
-			world.ReplaceComponent(playerEntity, new PositionComponent(finalPosition.x, finalPosition.y));
+			world.ReplaceComponent(playerEntity, new PositionComponent((finalPosition.x, finalPosition.y)));
         }
     }
 }

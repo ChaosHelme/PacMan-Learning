@@ -28,7 +28,7 @@ public class ConsoleRenderingProvider : IRenderingProvider
         {
             for (var x = 0; x < _mazeConfiguration.Width; x++)
             {
-                var pos = new PositionComponent(x, y);
+                var pos = new PositionComponent((x, y));
                 var player = _world.GetEntitiesWith<PlayerComponent, PositionComponent>()
                     .FirstOrDefault(e => _world.GetComponent<PositionComponent>(e).Equals(pos));
                 var ghost = _world.GetEntitiesWith<GhostComponent, PositionComponent>()

@@ -42,7 +42,7 @@ public class GameLogicSystem : IExecuteSystem
             else
             {
                 _world.ReplaceComponent(player, new LivesComponent(lives.Lives - 1));
-                _world.ReplaceComponent(player, new PositionComponent(1, 1));
+                _world.ReplaceComponent(player, new PositionComponent((1, 1)));
             }
         }
 

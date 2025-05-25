@@ -27,7 +27,7 @@ public class WorldTests
     public void AddAndGetComponent_ReturnsCorrectComponent()
     {
         var entity = _world.CreateEntity();
-        var pos = new PositionComponent(2, 3);
+        var pos = new PositionComponent((2, 3));
         _world.AddComponent(entity, pos);
 
         _world.GetComponent<PositionComponent>(entity).Should().Be(pos);
@@ -85,8 +85,8 @@ public class WorldTests
     public void AddComponent_Throws_InvalidOperationException_WhenComponentAlreadyExists()
     {
         var e1 = _world.CreateEntity();
-        _world.AddComponent(e1, new PositionComponent(2, 3));
+        _world.AddComponent(e1, new PositionComponent((2, 3)));
         
-        Assert.Throws<InvalidOperationException>(() => _world.AddComponent(e1, new PositionComponent(2, 1)));
+        Assert.Throws<InvalidOperationException>(() => _world.AddComponent(e1, new PositionComponent((2, 1))));
     }
 }

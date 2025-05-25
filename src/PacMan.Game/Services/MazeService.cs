@@ -10,8 +10,8 @@ public class MazeService(World world) : IMazeService
     {
         foreach (var entity in world.GetEntitiesWith<WallComponent>())
         {
-            var pos = world.GetComponent<PositionComponent>(entity);
-            if (pos.X == x && pos.Y == y) return true;
+            var positionComponent = world.GetComponent<PositionComponent>(entity);
+            if (positionComponent.Position.X == x && positionComponent.Position.Y == y) return true;
         }
         return false;
     }
@@ -20,31 +20,20 @@ public class MazeService(World world) : IMazeService
     {
         foreach (var entity in world.GetEntitiesWith<DotComponent>())
         {
-            var pos = world.GetComponent<PositionComponent>(entity);
-            if (pos.X == x && pos.Y == y) return true;
+            var positionComponent = world.GetComponent<PositionComponent>(entity);
+            if (positionComponent.Position.X == x && positionComponent.Position.Y == y) return true;
         }
         return false;
     }
 
     public bool IsWalkable(int x, int y) => !IsWallAt(x, y);
-
-    public bool IsWarpPortal(int x, int y)
-    {
-        foreach (var entity in world.GetEntitiesWith<WarpPortalComponent>())
-        {
-            var pos = world.GetComponent<PositionComponent>(entity);
-            if (pos.X == x && pos.Y == y) return true;
-        }
-
-        return false;
-    }
-    
+	
 	public bool TryGetWarpDestination(int x, int y, out (int x, int y) destination)
 	{
 		// Find all warp entities in the same row
 		var warpEntities = world.GetEntitiesWith<WarpPortalComponent>()
 			.Select(world.GetComponent<PositionComponent>)
-			.Where(pos => pos.Y == y)
+			.Where(component => component.Position.Y == y)
 			.ToList();
 		
 		destination = (x, y);
@@ -53,7 +42,7 @@ public class MazeService(World world) : IMazeService
 
 		// Find the other warp position in the same row
 		destination = warpEntities
-			.Select(s => (s.X, s.Y))
+			.Select(component => (component.Position.X, component.Position.Y))
 			.FirstOrDefault(pos => pos.X != x);
 		
 		return destination != default;

@@ -34,7 +34,7 @@ public class PlayerMovementIntegrationTests
         
         var player = _world.CreateEntity();
         _world.AddComponent(player, new PlayerComponent());
-        _world.AddComponent(player, new PositionComponent(1, 1));
+        _world.AddComponent(player, new PositionComponent((1, 1)));
         _world.AddComponent(player, new DirectionComponent(Direction.None));
         _world.AddComponent(player, new ScoreComponent(0));
         _world.AddComponent(player, new LivesComponent(3));
@@ -54,8 +54,8 @@ public class PlayerMovementIntegrationTests
         var inputComponent = _world.GetComponent<InputComponent>(_inputEntity);
         
         inputComponent.Direction.Should().Be(Direction.Right);
-        playerPositionComponent.X.Should().Be(2);
-        playerPositionComponent.Y.Should().Be(1);
+        playerPositionComponent.Position.X.Should().Be(2);
+        playerPositionComponent.Position.Y.Should().Be(1);
         
         _inputSystem.Execute();
         _playerDirectionSystem.Execute();
@@ -65,8 +65,8 @@ public class PlayerMovementIntegrationTests
         playerPositionComponent = _world.GetComponent<PositionComponent>(playerEntity);
         
         inputComponent.Direction.Should().Be(Direction.None);
-        playerPositionComponent.X.Should().Be(3);
-        playerPositionComponent.Y.Should().Be(1);
+        playerPositionComponent.Position.X.Should().Be(3);
+        playerPositionComponent.Position.Y.Should().Be(1);
     }
     
     [Test]
@@ -74,7 +74,7 @@ public class PlayerMovementIntegrationTests
     {
         var wallComponent = _world.CreateEntity();
         _world.AddComponent(wallComponent, new WallComponent());
-        _world.AddComponent(wallComponent, new PositionComponent(0, 1));
+        _world.AddComponent(wallComponent, new PositionComponent((0, 1)));
         
         _testInputProvider.AddInput(Direction.Left);
         
@@ -84,7 +84,7 @@ public class PlayerMovementIntegrationTests
         
         var playerEntity = _world.GetEntitiesWith<PlayerComponent>().Single();
         
-        _world.GetComponent<PositionComponent>(playerEntity).Should().Be(new PositionComponent(1, 1));
+        _world.GetComponent<PositionComponent>(playerEntity).Should().Be(new PositionComponent((1, 1)));
     }
     
     [Test]
@@ -92,10 +92,10 @@ public class PlayerMovementIntegrationTests
     {
         var warpSourceComponent = _world.CreateEntity();
         _world.AddComponent(warpSourceComponent, new WarpPortalComponent());
-        _world.AddComponent(warpSourceComponent, new PositionComponent(0, 1));
+        _world.AddComponent(warpSourceComponent, new PositionComponent((0, 1)));
 		var warpDestinationComponent = _world.CreateEntity();
 		_world.AddComponent(warpDestinationComponent, new WarpPortalComponent());
-		_world.AddComponent(warpDestinationComponent, new PositionComponent(2, 1));
+		_world.AddComponent(warpDestinationComponent, new PositionComponent((2, 1)));
 		
 		_testInputProvider.AddInput(Direction.Left);
 		
@@ -105,6 +105,6 @@ public class PlayerMovementIntegrationTests
 		
 		var playerEntity = _world.GetEntitiesWith<PlayerComponent>().Single();
 		
-		_world.GetComponent<PositionComponent>(playerEntity).Should().Be(new PositionComponent(2, 1));
+		_world.GetComponent<PositionComponent>(playerEntity).Should().Be(new PositionComponent((2, 1)));
     }
 }

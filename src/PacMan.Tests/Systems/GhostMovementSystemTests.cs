@@ -31,16 +31,16 @@ public class GhostMovementSystemTests
     {
         var ghost = _world.CreateEntity();
         _world.AddComponent(ghost, new GhostComponent());
-        _world.AddComponent(ghost, new PositionComponent(1, 1));
+        _world.AddComponent(ghost, new PositionComponent((1, 1)));
         
         // We set the TestRandomNumberService to return 1 which is Direction.Right
         _randomNumberService.PreloadRandomNumbers([1]);
 
         _moveSystem.Execute();
-        var pos = _world.GetComponent<PositionComponent>(ghost);
-        pos.X.Should().Be(2);
-        pos.Y.Should().Be(1);
-        _mazeService.IsWalkable(pos.X, pos.Y).Should().BeTrue();
+        var positionComponent = _world.GetComponent<PositionComponent>(ghost);
+        positionComponent.Position.X.Should().Be(2);
+        positionComponent.Position.Y.Should().Be(1);
+        _mazeService.IsWalkable(positionComponent.Position.X, positionComponent.Position.Y).Should().BeTrue();
     }
 
     [Test]
@@ -48,20 +48,20 @@ public class GhostMovementSystemTests
     {
         var ghost = _world.CreateEntity();
         _world.AddComponent(ghost, new GhostComponent());
-        _world.AddComponent(ghost, new PositionComponent(1, 1));
+        _world.AddComponent(ghost, new PositionComponent((1, 1)));
         
         var wallEntity = _world.CreateEntity();
         _world.AddComponent(wallEntity, new WallComponent());
-        _world.AddComponent(wallEntity, new PositionComponent(0, 1));
+        _world.AddComponent(wallEntity, new PositionComponent((0, 1)));
         
         // We set the TestRandomNumberService to return 0 which is Direction.Left
         // As we set the Ghost to currently be at position 1,1 - moving to the left would be invalid
         _randomNumberService.PreloadRandomNumbers([0]);
         
         _moveSystem.Execute();
-        var pos = _world.GetComponent<PositionComponent>(ghost);
-        pos.X.Should().Be(1);
-        pos.Y.Should().Be(1);
+        var positionComponent = _world.GetComponent<PositionComponent>(ghost);
+        positionComponent.Position.X.Should().Be(1);
+        positionComponent.Position.Y.Should().Be(1);
     }
 	
 	[Test]
@@ -69,19 +69,19 @@ public class GhostMovementSystemTests
 	{
 		var ghost = _world.CreateEntity();
 		_world.AddComponent(ghost, new GhostComponent());
-		_world.AddComponent(ghost, new PositionComponent(1, 1));
+		_world.AddComponent(ghost, new PositionComponent((1, 1)));
 		var warpSourceComponent = _world.CreateEntity();
 		_world.AddComponent(warpSourceComponent, new WarpPortalComponent());
-		_world.AddComponent(warpSourceComponent, new PositionComponent(0, 1));
+		_world.AddComponent(warpSourceComponent, new PositionComponent((0, 1)));
 		var warpDestinationComponent = _world.CreateEntity();
 		_world.AddComponent(warpDestinationComponent, new WarpPortalComponent());
-		_world.AddComponent(warpDestinationComponent, new PositionComponent(2, 1));
+		_world.AddComponent(warpDestinationComponent, new PositionComponent((2, 1)));
 		
 		// We set the TestRandomNumberService to return 0 which is Direction.Left
 		// As we set the Ghost to currently be at position 1,1 - moving to the left would be invalid
 		_randomNumberService.PreloadRandomNumbers([0]);
 		_moveSystem.Execute();
 		
-		_world.GetComponent<PositionComponent>(ghost).Should().Be(new PositionComponent(2, 1));
+		_world.GetComponent<PositionComponent>(ghost).Should().Be(new PositionComponent((2, 1)));
 	}
 }

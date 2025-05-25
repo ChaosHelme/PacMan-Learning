@@ -13,7 +13,7 @@ public class GhostMovementSystem(World world, IMazeService mazeService, IRandomN
         var ghosts = world.GetEntitiesWith<GhostComponent, PositionComponent>();
         foreach (var ghost in ghosts)
         {
-            var pos = world.GetComponent<PositionComponent>(ghost);
+            var pos = world.GetComponent<PositionComponent>(ghost).Position;
             var direction = _directions[randomNumberService.RandomNumber(0, _directions.Length)];
             
             var newPos = direction switch
@@ -29,7 +29,7 @@ public class GhostMovementSystem(World world, IMazeService mazeService, IRandomN
 			mazeService.TryGetWarpDestination(newPos.X, newPos.Y, out var finalPosition);
 			if (isWalkable)
 			{
-				world.ReplaceComponent(ghost, new PositionComponent(finalPosition.x, finalPosition.y));
+				world.ReplaceComponent(ghost, new PositionComponent((finalPosition.x, finalPosition.y)));
 			}
         }
     }

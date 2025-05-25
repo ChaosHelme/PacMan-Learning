@@ -23,7 +23,7 @@ namespace PacMan.Tests.Services
         {
             var wall = _world.CreateEntity();
             _world.AddComponent(wall, new WallComponent());
-            _world.AddComponent(wall, new PositionComponent(2, 3));
+            _world.AddComponent(wall, new PositionComponent((2, 3)));
 
             _mazeService.IsWallAt(2, 3).Should().BeTrue();
         }
@@ -33,7 +33,7 @@ namespace PacMan.Tests.Services
         {
             var wall = _world.CreateEntity();
             _world.AddComponent(wall, new WallComponent());
-            _world.AddComponent(wall, new PositionComponent(1, 1));
+            _world.AddComponent(wall, new PositionComponent((1, 1)));
 
             _mazeService.IsWallAt(2, 2).Should().BeFalse();
         }
@@ -43,7 +43,7 @@ namespace PacMan.Tests.Services
         {
             var dot = _world.CreateEntity();
             _world.AddComponent(dot, new DotComponent());
-            _world.AddComponent(dot, new PositionComponent(5, 6));
+            _world.AddComponent(dot, new PositionComponent((5, 6)));
 
             _mazeService.IsDotAt(5, 6).Should().BeTrue();
         }
@@ -53,7 +53,7 @@ namespace PacMan.Tests.Services
         {
             var dot = _world.CreateEntity();
             _world.AddComponent(dot, new DotComponent());
-            _world.AddComponent(dot, new PositionComponent(0, 0));
+            _world.AddComponent(dot, new PositionComponent((0, 0)));
 
             _mazeService.IsDotAt(1, 1).Should().BeFalse();
         }
@@ -63,7 +63,7 @@ namespace PacMan.Tests.Services
         {
             var wall = _world.CreateEntity();
             _world.AddComponent(wall, new WallComponent());
-            _world.AddComponent(wall, new PositionComponent(8, 9));
+            _world.AddComponent(wall, new PositionComponent((8, 9)));
 
             _mazeService.IsWalkable(8, 9).Should().BeFalse();
         }
@@ -79,11 +79,11 @@ namespace PacMan.Tests.Services
         {
             var wall = _world.CreateEntity();
             _world.AddComponent(wall, new WallComponent());
-            _world.AddComponent(wall, new PositionComponent(2, 2));
+            _world.AddComponent(wall, new PositionComponent((2, 2)));
 
             var dot = _world.CreateEntity();
             _world.AddComponent(dot, new DotComponent());
-            _world.AddComponent(dot, new PositionComponent(3, 3));
+            _world.AddComponent(dot, new PositionComponent((3, 3)));
 
             _mazeService.IsWallAt(2, 2).Should().BeTrue();
             _mazeService.IsDotAt(2, 2).Should().BeFalse();
@@ -98,14 +98,14 @@ namespace PacMan.Tests.Services
 			// Arrange: Create world, add two warp entities in row 5 at (0,5) and (27,5)
 			var leftWarp = _world.CreateEntity();
 			_world.AddComponent(leftWarp, new WarpPortalComponent());
-			_world.AddComponent(leftWarp, new PositionComponent(0, 5));
+			_world.AddComponent(leftWarp, new PositionComponent((0, 5)));
 			var rightWarp = _world.CreateEntity();
 			_world.AddComponent(rightWarp, new WarpPortalComponent());
-			_world.AddComponent(rightWarp, new PositionComponent(27, 5));
+			_world.AddComponent(rightWarp, new PositionComponent((27, 5)));
 
 			// Place player at (0,5)
 			var player = _world.CreateEntity();
-			_world.AddComponent(player, new PositionComponent(0, 5));
+			_world.AddComponent(player, new PositionComponent((0, 5)));
 
 			var mazeService = new MazeService(_world);
 

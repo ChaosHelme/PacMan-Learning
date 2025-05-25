@@ -6,7 +6,7 @@ using PacMan.Game.Rendering;
 using PacMan.Game.Services;
 using PacMan.Game.Systems;
 using Spectre.Console;
-using IInitializeSystem = PacMan.Game.Systems.IInitializeSystem;
+using IInitializeSystem = PacMan.ECS.IInitializeSystem;
 
 namespace PacMan.Game.Core;
 
@@ -31,7 +31,7 @@ public class GameRunner(
         // Entities & Components
         var player = world.CreateEntity();
         world.AddComponent(player, new PlayerComponent());
-        world.AddComponent(player, new PositionComponent(1, 1));
+        world.AddComponent(player, new PositionComponent((1, 1)));
         world.AddComponent(player, new DirectionComponent(Direction.None));
         world.AddComponent(player, new ScoreComponent(0));
         world.AddComponent(player, new LivesComponent(3));
@@ -44,7 +44,7 @@ public class GameRunner(
         {
             var ghost = world.CreateEntity();
             world.AddComponent(ghost, new GhostComponent());
-            world.AddComponent(ghost, new PositionComponent(gx, gy));
+            world.AddComponent(ghost, new PositionComponent((gx, gy)));
         }
 
         ICollection<IInitializeSystem> initializeSystems = [];
