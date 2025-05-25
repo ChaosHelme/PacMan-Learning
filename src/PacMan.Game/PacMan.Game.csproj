@@ -15,4 +15,11 @@
       <ProjectReference Include="..\PacMan.ECS\PacMan.ECS.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="maze.txt" />
+      <Content Include="maze.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>

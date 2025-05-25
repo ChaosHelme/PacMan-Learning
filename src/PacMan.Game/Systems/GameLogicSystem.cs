@@ -1,18 +1,17 @@
 using PacMan.ECS;
 using PacMan.Game.Components;
+using PacMan.Game.Services;
 
 namespace PacMan.Game.Systems;
 
 public class GameLogicSystem : IExecuteSystem
 {
     private readonly World _world;
-    private readonly Maze _maze;
     public bool GameOver { get; private set; }
 
-    public GameLogicSystem(World world, Maze maze)
+    public GameLogicSystem(World world)
     {
         _world = world;
-        _maze = maze;
     }
 
     public void Execute()
@@ -25,10 +24,10 @@ public class GameLogicSystem : IExecuteSystem
             .FirstOrDefault(e => _world.GetComponent<PositionComponent>(e).Equals(playerPos));
         if (!dot.Equals(default(Entity)))
         {
-            _world.RemoveComponent<DotComponent>(dot);
-            _maze.RemoveDot(playerPos.X, playerPos.Y);
             var score = _world.GetComponent<ScoreComponent>(player);
             _world.ReplaceComponent(player, new ScoreComponent(score.Score + 10));
+            
+            _world.DestroyEntity(dot);
         }
 
         // Ghost collision

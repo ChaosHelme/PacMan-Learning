@@ -2,6 +2,7 @@ using FluentAssertions;
 using PacMan.ECS;
 using PacMan.Game;
 using PacMan.Game.Components;
+using PacMan.Game.Services;
 using PacMan.Game.Systems;
 
 namespace PacMan.Tests.Integrations;
@@ -10,7 +11,7 @@ namespace PacMan.Tests.Integrations;
 public class PlayerScoreAndLifeIntegrationTests
 {
     private World _world;
-    private Maze _maze;
+    private IMazeService _mazeService;
     private PlayerMovementSystem _playerMoveSystem;
     private GameLogicSystem _logicSystem;
     private Entity _player;
@@ -19,9 +20,9 @@ public class PlayerScoreAndLifeIntegrationTests
     public void Setup()
     {
         _world = new World();
-        _maze = new Maze();
-        _playerMoveSystem = new PlayerMovementSystem(_world, _maze);
-        _logicSystem = new GameLogicSystem(_world, _maze);
+        _mazeService = new MazeService(_world);
+        _playerMoveSystem = new PlayerMovementSystem(_world, _mazeService);
+        _logicSystem = new GameLogicSystem(_world);
 
         // Player setup
         _player = _world.CreateEntity();

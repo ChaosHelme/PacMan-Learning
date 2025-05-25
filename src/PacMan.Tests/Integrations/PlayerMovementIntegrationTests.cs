@@ -2,6 +2,7 @@ using FluentAssertions;
 using PacMan.ECS;
 using PacMan.Game;
 using PacMan.Game.Components;
+using PacMan.Game.Services;
 using PacMan.Game.Systems;
 
 namespace PacMan.Tests.Integrations;
@@ -11,24 +12,24 @@ public class PlayerMovementIntegrationTests
 {
     Entity _inputEntity;
     World _world;
-    Maze _maze;
     InputSystem _inputSystem;
     PlayerMovementSystem _playerMovementSystem;
     PlayerDirectionSystem _playerDirectionSystem;
     TestInputProvider _testInputProvider;
+    IMazeService _mazeService;
 
     [SetUp]
     public void Setup()
     {
         _world = new World();
-        _maze = new Maze();
         _inputEntity = _world.CreateEntity();
         _world.AddComponent(_inputEntity, new InputComponent(Direction.None));
 
+        _mazeService = new MazeService(_world);
         _testInputProvider = new TestInputProvider([]);
         _inputSystem = new InputSystem(_world, _testInputProvider);
         _playerDirectionSystem = new PlayerDirectionSystem(_world);
-        _playerMovementSystem = new PlayerMovementSystem(_world, _maze);
+        _playerMovementSystem = new PlayerMovementSystem(_world, _mazeService);
         
         var player = _world.CreateEntity();
         _world.AddComponent(player, new PlayerComponent());
@@ -70,6 +71,10 @@ public class PlayerMovementIntegrationTests
     [Test]
     public void MovePlayer_IntoWall_DoesNotUpdatePosition()
     {
+        var wallComponent = _world.CreateEntity();
+        _world.AddComponent(wallComponent, new WallComponent());
+        _world.AddComponent(wallComponent, new PositionComponent(0, 1));
+        
         _testInputProvider.AddInput(Direction.Left);
         
         _inputSystem.Execute();

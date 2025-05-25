@@ -1,5 +1,7 @@
 using PacMan.ECS;
 using PacMan.Game.Components;
+using PacMan.Game.Configuration;
+using PacMan.Game.Services;
 using Spectre.Console;
 
 namespace PacMan.Game.Rendering;
@@ -7,31 +9,33 @@ namespace PacMan.Game.Rendering;
 public class ConsoleRenderingProvider : IRenderingProvider
 {
     World _world = null!;
-    Maze _maze = null!;
+    MazeConfiguration _mazeConfiguration = null!;
     IGameArtAssets _assets = null!;
+    IMazeService _mazeService = null!;
     
-    public void Initialize(World world, Maze maze, IGameArtAssets assets)
+    public void Initialize(World world, MazeConfiguration mazeConfiguration, IMazeService mazeService, IGameArtAssets assets)
     {
         _world = world;
-        _maze = maze;
+        _mazeConfiguration = mazeConfiguration;
         _assets = assets;
+        _mazeService = mazeService;
     }
 
     public void Render()
     {
         AnsiConsole.Cursor.SetPosition(0, 0);
-        for (var y = 0; y < Maze.Height; y++)
+        for (var y = 0; y < _mazeConfiguration.Height; y++)
         {
-            for (var x = 0; x < Maze.Width; x++)
+            for (var x = 0; x < _mazeConfiguration.Width; x++)
             {
                 var pos = new PositionComponent(x, y);
                 var player = _world.GetEntitiesWith<PlayerComponent, PositionComponent>()
                     .FirstOrDefault(e => _world.GetComponent<PositionComponent>(e).Equals(pos));
                 var ghost = _world.GetEntitiesWith<GhostComponent, PositionComponent>()
                     .FirstOrDefault(e => _world.GetComponent<PositionComponent>(e).Equals(pos));
-                var dot = _maze.HasDot(x, y);
+                var dot = _mazeService.IsDotAt(x, y);
 
-                if (_maze.IsWallAt(x, y))
+                if (_mazeService.IsWallAt(x, y))
                     AnsiConsole.Write(_assets.WallArt);
                 else if (!player.Equals(default(Entity)) && _world.HasComponent<PlayerComponent>(player))
                     AnsiConsole.Write(_assets.PlayerArt);

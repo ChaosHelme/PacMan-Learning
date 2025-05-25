@@ -4,7 +4,7 @@ using PacMan.Game.Services;
 
 namespace PacMan.Game.Systems;
 
-public class GhostMovementSystem(World world, Maze maze, IRandomNumberService randomNumberService) : IExecuteSystem
+public class GhostMovementSystem(World world, IMazeService mazeService, IRandomNumberService randomNumberService) : IExecuteSystem
 {
     static readonly Direction[] _directions = [Direction.Left, Direction.Right, Direction.Up, Direction.Down];
     
@@ -24,7 +24,7 @@ public class GhostMovementSystem(World world, Maze maze, IRandomNumberService ra
                 Direction.Down => pos with {Y = pos.Y + 1},
                 _ => pos
             };
-            if (maze.IsWalkable(newPos.X, newPos.Y))
+            if (mazeService.IsWalkable(newPos.X, newPos.Y))
             {
                 world.ReplaceComponent(ghost, newPos);
             }

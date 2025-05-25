@@ -1,9 +1,10 @@
 using PacMan.ECS;
 using PacMan.Game.Components;
+using PacMan.Game.Services;
 
 namespace PacMan.Game.Systems;
 
-public class PlayerMovementSystem(World world, Maze maze) : IExecuteSystem
+public class PlayerMovementSystem(World world, IMazeService mazeService) : IExecuteSystem
 {
     public void Execute()
     {
@@ -22,7 +23,7 @@ public class PlayerMovementSystem(World world, Maze maze) : IExecuteSystem
             _ => pos,
         };
         
-        if (maze.IsWalkable(newPos.X, newPos.Y))
+        if (mazeService.IsWalkable(newPos.X, newPos.Y))
         {
             world.ReplaceComponent(playerEntity, newPos);
         }

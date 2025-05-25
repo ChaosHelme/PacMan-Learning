@@ -1,7 +1,9 @@
+using PacMan.Game.Configuration;
 using PacMan.Game.Core;
 using PacMan.Game.Input;
 using PacMan.Game.Menu;
 using PacMan.Game.Rendering;
+using PacMan.Game.Services;
 
 namespace PacMan.Game.Bootstrap;
 
@@ -12,6 +14,7 @@ public class PacmanGameApp
     readonly IRenderingProvider _renderingProvider;
     readonly IMenu _mainMenu;
     readonly IMenu _optionsMenu;
+    readonly IFileService _fileService;
     readonly int _frameDelay;
 
     internal PacmanGameApp(
@@ -20,6 +23,7 @@ public class PacmanGameApp
         IRenderingProvider renderingProvider,
         IMenu mainMenu,
         IMenu optionsMenu,
+        IFileService fileService,
         int frameDelay)
     {
         _renderMode = renderMode;
@@ -28,12 +32,14 @@ public class PacmanGameApp
         _mainMenu = mainMenu;
         _optionsMenu = optionsMenu;
         _frameDelay = frameDelay;
+        _fileService = fileService;
     }
     
     public async Task Start(CancellationTokenSource cts)
     {
         IGameArtAssets gameArtAssets = _renderMode == RenderMode.Emoji ? new EmojiConsoleAssets() : new AsciiConsoleAssets();
-        var gameRunner = new GameRunner(_renderingProvider, _inputProvider, gameArtAssets, cts);
+        var mazeConfiguration = MazeConfigurationLoader.LoadMazeConfiguration(Path.Combine(Directory.GetCurrentDirectory(), "maze.txt"), _fileService);
+        var gameRunner = new GameRunner(_renderingProvider, _inputProvider, gameArtAssets, mazeConfiguration, cts);
 
         // When emoji mode is active, we need to ensure to set the output encoding to UTF8
         if (gameArtAssets is EmojiConsoleAssets)

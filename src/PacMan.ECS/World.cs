@@ -75,6 +75,32 @@ public class World
         }
     }
     
+    /// <summary>
+    /// Destroys the given entity, removing all its components.
+    /// </summary>
+    public void DestroyEntity(Entity entity)
+    {
+        // Collect all component types that this entity has
+        var componentTypes = _components
+            .Where(kvp => kvp.Value.ContainsKey(entity))
+            .Select(kvp => kvp.Key)
+            .ToList();
+
+        // Remove each component from the entity
+        foreach (var type in componentTypes)
+        {
+            // Remove unique component tracking if necessary
+            if (typeof(IUniqueComponent).IsAssignableFrom(type) &&
+                _uniqueComponentOwners.TryGetValue(type, out var owner) &&
+                owner.Equals(entity))
+            {
+                _uniqueComponentOwners.Remove(type);
+            }
+
+            _components[type].Remove(entity);
+        }
+    }
+    
     public Entity GetUniqueComponentOwner<T>() where T : IUniqueComponent
     {
         if (_uniqueComponentOwners.TryGetValue(typeof(T), out var entity))

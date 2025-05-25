@@ -1,10 +1,12 @@
 using PacMan.ECS;
 using PacMan.Game.Components;
+using PacMan.Game.Configuration;
 using PacMan.Game.Input;
 using PacMan.Game.Rendering;
 using PacMan.Game.Services;
 using PacMan.Game.Systems;
 using Spectre.Console;
+using IInitializeSystem = PacMan.Game.Systems.IInitializeSystem;
 
 namespace PacMan.Game.Core;
 
@@ -12,6 +14,7 @@ public class GameRunner(
     IRenderingProvider renderingProvider,
     IInputProvider inputProvider,
     IGameArtAssets gameArtAssets,
+    MazeConfiguration mazeConfiguration,
     CancellationTokenSource cts) : IGameRunner
 {
     public async Task Run(int frameDelay)
@@ -21,9 +24,9 @@ public class GameRunner(
         
         // ECS Setup
         var world = new World();
-        var maze = new Maze();
         
-        renderingProvider.Initialize(world, maze, gameArtAssets);
+        var mazeService = new MazeService(world);
+        renderingProvider.Initialize(world, mazeConfiguration, mazeService, gameArtAssets);
 
         // Entities & Components
         var player = world.CreateEntity();
@@ -44,27 +47,24 @@ public class GameRunner(
             world.AddComponent(ghost, new PositionComponent(gx, gy));
         }
 
-        // Dots
-        for (var y = 0; y < Maze.Height; y++)
-            for (var x = 0; x < Maze.Width; x++)
-            {
-                if (!maze.IsWallAt(x, y) && maze.HasDot(x, y))
-                {
-                    var dot = world.CreateEntity();
-                    world.AddComponent(dot, new DotComponent());
-                    world.AddComponent(dot, new PositionComponent(x, y));
-                }
-            }
-
+        ICollection<IInitializeSystem> initializeSystems = [];
         ICollection<IExecuteSystem> executeSystems = [];
         
-        // Systems (Order matters!)
+        // InitializeSystems
+        initializeSystems.Add(new MazeLoaderSystem(world, mazeConfiguration));
+        
+        // ExecuteSystems (Order matters!)
         executeSystems.Add(new InputSystem(world, inputProvider));
         executeSystems.Add(new PlayerDirectionSystem(world));
-        executeSystems.Add(new PlayerMovementSystem(world, maze));
-        executeSystems.Add(new GhostMovementSystem(world, maze, new RandomNumberService()));
-        executeSystems.Add(new GameLogicSystem(world, maze));
+        executeSystems.Add(new PlayerMovementSystem(world, mazeService));
+        executeSystems.Add(new GhostMovementSystem(world, mazeService, new RandomNumberService()));
+        executeSystems.Add(new GameLogicSystem(world));
 
+        foreach (var initializeSystem in initializeSystems)
+        {
+            initializeSystem.Initialize();
+        }
+        
         // Game Loop
         while (!cts.IsCancellationRequested)
         {
@@ -82,7 +82,7 @@ public class GameRunner(
         }
         
         var finalScore = world.GetComponent<ScoreComponent>(player).Score;
-        AnsiConsole.Cursor.SetPosition(0, Maze.Height + 2);
+        AnsiConsole.Cursor.SetPosition(0, mazeConfiguration.Height + 2);
         AnsiConsole.Write(
             new Panel($"[bold]Game Over![/]\nFinal Score: {finalScore}")
                 .Border(BoxBorder.Rounded)

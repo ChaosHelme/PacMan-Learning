@@ -1,6 +1,7 @@
 using PacMan.Game.Input;
 using PacMan.Game.Menu;
 using PacMan.Game.Rendering;
+using PacMan.Game.Services;
 
 namespace PacMan.Game.Bootstrap;
 
@@ -9,7 +10,14 @@ public class PacmanGameAppBuilder : IPacmanGameAppBuilder
     private RenderMode _renderMode = RenderMode.Ascii;
     private IInputProvider? _inputProvider;
     private IRenderingProvider? _renderingProvider;
+    private IFileService? _fileService;
     private int _frameDelay = 100;
+
+    public IPacmanGameAppBuilder WithFileService(IFileService fileService)
+    {
+        _fileService = fileService;
+        return this;
+    }
     
     public IPacmanGameAppBuilder WithRenderingProvider(IRenderingProvider renderingProvider)
     {
@@ -43,6 +51,7 @@ public class PacmanGameAppBuilder : IPacmanGameAppBuilder
             _renderingProvider ?? new ConsoleRenderingProvider(),
             new MainMenu(),
             new OptionsMenu(),
+            _fileService ?? new FileService(),
             _frameDelay
         );
     }

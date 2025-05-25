@@ -1,4 +1,4 @@
-namespace PacMan.Game.Systems;
+namespace PacMan.ECS;
 
 public interface IExecuteSystem
 {
