@@ -103,16 +103,13 @@ namespace PacMan.Tests.Services
 			_world.AddComponent(rightWarp, new WarpPortalComponent());
 			_world.AddComponent(rightWarp, new PositionComponent((27, 5)));
 
-			// Place player at (0,5)
-			var player = _world.CreateEntity();
-			_world.AddComponent(player, new PositionComponent((0, 5)));
-
 			var mazeService = new MazeService(_world);
 
 			// Act: Simulate moving left into the warp
-			mazeService.TryGetWarpDestination(0, 5, out var newPos);
+			var result = mazeService.TryGetWarpDestination(0, 5, out var newPos);
 
 			// Assert: Player should appear at (27,5)
+			result.Should().BeTrue();
 			newPos.Should().Be((27, 5));
 		}
     }
