@@ -1,6 +1,6 @@
 # Pac-Man-Learning
 
-[[TOC]]
+[TOC]
 
 Welcome to the **Pac-Man-Learning** repository!  
 This project is a modern, testable, and extensible implementation of the classic Pac-Man game in C#, designed for the command line and built to help you learn:
