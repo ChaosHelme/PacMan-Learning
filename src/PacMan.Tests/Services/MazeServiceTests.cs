@@ -95,7 +95,7 @@ namespace PacMan.Tests.Services
 		[Test]
 		public void TryGetWarpDestination_Returns_CorrectDestination_WhenWarpPortalContainsSourceAndDestination()
 		{
-			// Arrange: Create world, add two warp entities in row 5 at (0,5) and (27,5)
+			// Arrange: add two warp entities in row 5 at (0,5) and (27,5)
 			var leftWarp = _world.CreateEntity();
 			_world.AddComponent(leftWarp, new WarpPortalComponent());
 			_world.AddComponent(leftWarp, new PositionComponent((0, 5)));
@@ -105,10 +105,10 @@ namespace PacMan.Tests.Services
 
 			var mazeService = new MazeService(_world);
 
-			// Act: Simulate moving left into the warp
+			// Act
 			var result = mazeService.TryGetWarpDestination(0, 5, out var newPos);
 
-			// Assert: Player should appear at (27,5)
+			// Assert: newPos should be (27,5) and result should be true
 			result.Should().BeTrue();
 			newPos.Should().Be((27, 5));
 		}

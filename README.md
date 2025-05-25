@@ -108,24 +108,21 @@ Start by implementing the test, which will fail, because we didn't implement `Ma
 [Test]
 public void TryGetWarpDestination_Returns_CorrectDestination_WhenWarpPortalContainsSourceAndDestination()
 {
-    // Arrange: Create world, add two warp entities in row 5 at (0,5) and (27,5)
+    // Arrange: add two warp entities in row 5 at (0,5) and (27,5)
     var leftWarp = _world.CreateEntity();
     _world.AddComponent(leftWarp, new WarpPortalComponent());
-    _world.AddComponent(leftWarp, new PositionComponent(0, 5));
+    _world.AddComponent(leftWarp, new PositionComponent((0, 5)));
     var rightWarp = _world.CreateEntity();
     _world.AddComponent(rightWarp, new WarpPortalComponent());
-    _world.AddComponent(rightWarp, new PositionComponent(27, 5));
-
-    // Place player at (0,5)
-    var player = _world.CreateEntity();
-    _world.AddComponent(player, new PositionComponent(0, 5));
+    _world.AddComponent(rightWarp, new PositionComponent((27, 5)));
 
     var mazeService = new MazeService(_world);
 
-    // Act: Simulate moving left into the warp
-    mazeService.TryGetWarpDestination(0, 5, out var newPos);
+    // Act
+    var result = mazeService.TryGetWarpDestination(0, 5, out var newPos);
 
-    // Assert: Player should appear at (27,5)
+    // Assert: newPos should be (27,5) and result should be true
+    result.Should().BeTrue();
     newPos.Should().Be((27, 5));
 }
 ```
@@ -139,7 +136,7 @@ public bool TryGetWarpDestination(int x, int y, out (int x, int y) destination)
     // Find all warp entities in the same row
     var warpEntities = world.GetEntitiesWith<WarpPortalComponent>()
         .Select(world.GetComponent<PositionComponent>)
-        .Where(pos => pos.Y == y)
+        .Where(component => component.Position.Y == y)
         .ToList();
     
     destination = (x, y);
@@ -148,7 +145,7 @@ public bool TryGetWarpDestination(int x, int y, out (int x, int y) destination)
 
     // Find the other warp position in the same row
     destination = warpEntities
-        .Select(s => (s.X, s.Y))
+        .Select(component => (component.Position.X, component.Position.Y))
         .FirstOrDefault(pos => pos.X != x);
     
     return destination != default;
