@@ -81,6 +81,29 @@ public class WorldTests
         Assert.Throws<InvalidOperationException>(() => _world.AddComponent(e2, new PlayerComponent()));
     }
 
+	[Test]
+	public void RemoveUniqueComponent_RemovesComponent()
+	{
+		var e1 = _world.CreateEntity();
+		_world.AddComponent(e1, new PlayerComponent());
+		_world.HasComponent<PlayerComponent>(e1).Should().BeTrue();
+		_world.RemoveComponent<PlayerComponent>(e1);
+		_world.HasComponent<PlayerComponent>(e1).Should().BeFalse();
+	}
+
+	[Test]
+	public void DestroyEntity_ShouldRemoveAllComponents_AndDestroyEntity()
+	{
+		var e1 = _world.CreateEntity();
+		_world.AddComponent(e1, new PlayerComponent());
+		_world.AddComponent(e1, new PositionComponent((2, 3)));
+		_world.HasComponent<PositionComponent>(e1).Should().BeTrue();
+		_world.HasComponent<PlayerComponent>(e1).Should().BeTrue();
+		
+		_world.DestroyEntity(e1);
+		_world.GetEntitiesWith<PlayerComponent, PositionComponent>().Should().BeEmpty();
+	}
+
     [Test]
     public void AddComponent_Throws_InvalidOperationException_WhenComponentAlreadyExists()
     {
