@@ -181,7 +181,7 @@ The workflow is defined in [dotnet.yaml](/.github/workflows/dotnet.yml)
 
 2. **Build and run the game:**
     ```
-    dotnet run -- --render-mode emoji
+    dotnet run --project .\src\PacMan.Game\PacMan.Game.csproj -- --render-mode emoji
     ```
     - Use `--render-mode ascii` for ASCII rendering (default if not specified).
 
@@ -195,7 +195,7 @@ The workflow is defined in [dotnet.yaml](/.github/workflows/dotnet.yml)
 
 1. **Run all tests:**
     ```
-    dotnet test
+    dotnet test src/
     ```
 
     - The project includes unit and integration tests using [NUnit](https://nunit.org/) and [FluentAssertions](https://fluentassertions.com/).
