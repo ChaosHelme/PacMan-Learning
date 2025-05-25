@@ -25,17 +25,12 @@ public class GhostMovementSystem(World world, IMazeService mazeService, IRandomN
                 _ => pos
             };
             
-            var isWarpPortal = mazeService.IsWarpPortal(newPos.X, newPos.Y);
-            var isWalkable = mazeService.IsWalkable(newPos.X, newPos.Y);
-            var finalPosition = (pos.X, pos.Y);
-            if (isWalkable && !isWarpPortal)
-            {
-                finalPosition = (newPos.X, newPos.Y);
-            } else if (isWalkable && isWarpPortal)
-            {
-                finalPosition = mazeService.GetWarpDestination((newPos.X, newPos.Y));
-            }
-            world.ReplaceComponent(ghost, new PositionComponent(finalPosition.X, finalPosition.Y));
+			var isWalkable = mazeService.IsWalkable(newPos.X, newPos.Y);
+			mazeService.TryGetWarpDestination(newPos.X, newPos.Y, out var finalPosition);
+			if (isWalkable)
+			{
+				world.ReplaceComponent(ghost, new PositionComponent(finalPosition.x, finalPosition.y));
+			}
         }
     }
 }

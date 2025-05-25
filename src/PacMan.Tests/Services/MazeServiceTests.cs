@@ -1,7 +1,6 @@
 using FluentAssertions;
 using PacMan.ECS;
 using PacMan.Game.Components;
-using PacMan.Game.Configuration;
 using PacMan.Game.Services;
 
 namespace PacMan.Tests.Services
@@ -16,7 +15,7 @@ namespace PacMan.Tests.Services
         public void SetUp()
         {
             _world = new World();
-            _mazeService = new MazeService(_world, new MazeConfiguration());
+            _mazeService = new MazeService(_world);
         }
 
         [Test]
@@ -92,5 +91,29 @@ namespace PacMan.Tests.Services
             _mazeService.IsDotAt(3, 3).Should().BeTrue();
             _mazeService.IsWallAt(3, 3).Should().BeFalse();
         }
+		
+		[Test]
+		public void TryGetWarpDestination_Returns_CorrectDestination_WhenWarpPortalContainsSourceAndDestination()
+		{
+			// Arrange: Create world, add two warp entities in row 5 at (0,5) and (27,5)
+			var leftWarp = _world.CreateEntity();
+			_world.AddComponent(leftWarp, new WarpPortalComponent());
+			_world.AddComponent(leftWarp, new PositionComponent(0, 5));
+			var rightWarp = _world.CreateEntity();
+			_world.AddComponent(rightWarp, new WarpPortalComponent());
+			_world.AddComponent(rightWarp, new PositionComponent(27, 5));
+
+			// Place player at (0,5)
+			var player = _world.CreateEntity();
+			_world.AddComponent(player, new PositionComponent(0, 5));
+
+			var mazeService = new MazeService(_world);
+
+			// Act: Simulate moving left into the warp
+			mazeService.TryGetWarpDestination(0, 5, out var newPos);
+
+			// Assert: Player should appear at (27,5)
+			newPos.Should().Be((27, 5));
+		}
     }
 }

@@ -21,7 +21,7 @@ public class GhostMovementSystemTests
     public void Setup()
     {
         _world = new World();
-        _mazeService = new MazeService(_world, new MazeConfiguration());
+        _mazeService = new MazeService(_world);
         _randomNumberService = new TestRandomNumberService();
         _moveSystem = new GhostMovementSystem(_world, _mazeService, _randomNumberService);
     }
@@ -63,4 +63,25 @@ public class GhostMovementSystemTests
         pos.X.Should().Be(1);
         pos.Y.Should().Be(1);
     }
+	
+	[Test]
+	public void MovePlayer_IntoWarpPortal_ShouldSpawnPlayer_AtTheOppositePosition()
+	{
+		var ghost = _world.CreateEntity();
+		_world.AddComponent(ghost, new GhostComponent());
+		_world.AddComponent(ghost, new PositionComponent(1, 1));
+		var warpSourceComponent = _world.CreateEntity();
+		_world.AddComponent(warpSourceComponent, new WarpPortalComponent());
+		_world.AddComponent(warpSourceComponent, new PositionComponent(0, 1));
+		var warpDestinationComponent = _world.CreateEntity();
+		_world.AddComponent(warpDestinationComponent, new WarpPortalComponent());
+		_world.AddComponent(warpDestinationComponent, new PositionComponent(2, 1));
+		
+		// We set the TestRandomNumberService to return 0 which is Direction.Left
+		// As we set the Ghost to currently be at position 1,1 - moving to the left would be invalid
+		_randomNumberService.PreloadRandomNumbers([0]);
+		_moveSystem.Execute();
+		
+		_world.GetComponent<PositionComponent>(ghost).Should().Be(new PositionComponent(2, 1));
+	}
 }

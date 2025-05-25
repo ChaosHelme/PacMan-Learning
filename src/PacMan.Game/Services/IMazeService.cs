@@ -6,5 +6,5 @@ public interface IMazeService
     bool IsDotAt(int x, int y);
     bool IsWalkable(int x, int y);
     bool IsWarpPortal(int x, int y);
-    (int X, int Y) GetWarpDestination((int x, int y) source);
+	bool TryGetWarpDestination(int x, int y, out (int x, int y) destination);
 }

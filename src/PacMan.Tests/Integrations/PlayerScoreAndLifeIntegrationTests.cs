@@ -21,7 +21,7 @@ public class PlayerScoreAndLifeIntegrationTests
     public void Setup()
     {
         _world = new World();
-        _mazeService = new MazeService(_world, new MazeConfiguration());
+        _mazeService = new MazeService(_world);
         _playerMoveSystem = new PlayerMovementSystem(_world, _mazeService);
         _logicSystem = new GameLogicSystem(_world);
 

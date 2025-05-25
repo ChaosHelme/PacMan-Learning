@@ -23,16 +23,11 @@ public class PlayerMovementSystem(World world, IMazeService mazeService) : IExec
             _ => pos,
         };
         
-        var isWarpPortal = mazeService.IsWarpPortal(newPos.X, newPos.Y);
         var isWalkable = mazeService.IsWalkable(newPos.X, newPos.Y);
-        var finalPosition = (pos.X, pos.Y);
-        if (isWalkable && !isWarpPortal)
+		mazeService.TryGetWarpDestination(newPos.X, newPos.Y, out var finalPosition);
+        if (isWalkable)
         {
-            finalPosition = (newPos.X, newPos.Y);
-        } else if (isWalkable && isWarpPortal)
-        {
-            finalPosition = mazeService.GetWarpDestination((newPos.X, newPos.Y));
+			world.ReplaceComponent(playerEntity, new PositionComponent(finalPosition.x, finalPosition.y));
         }
-        world.ReplaceComponent(playerEntity, new PositionComponent(finalPosition.X, finalPosition.Y));
     }
 }

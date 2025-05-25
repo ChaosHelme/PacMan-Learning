@@ -25,7 +25,7 @@ public class GameRunner(
         // ECS Setup
         var world = new World();
         
-        var mazeService = new MazeService(world, mazeConfiguration);
+        var mazeService = new MazeService(world);
         renderingProvider.Initialize(world, mazeConfiguration, mazeService, gameArtAssets);
 
         // Entities & Components

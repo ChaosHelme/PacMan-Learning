@@ -25,8 +25,8 @@ public class PlayerMovementIntegrationTests
         _world = new World();
         _inputEntity = _world.CreateEntity();
         _world.AddComponent(_inputEntity, new InputComponent(Direction.None));
-
-        _mazeService = new MazeService(_world, new MazeConfiguration());
+		
+        _mazeService = new MazeService(_world);
         _testInputProvider = new TestInputProvider([]);
         _inputSystem = new InputSystem(_world, _testInputProvider);
         _playerDirectionSystem = new PlayerDirectionSystem(_world);
@@ -93,5 +93,18 @@ public class PlayerMovementIntegrationTests
         var warpSourceComponent = _world.CreateEntity();
         _world.AddComponent(warpSourceComponent, new WarpPortalComponent());
         _world.AddComponent(warpSourceComponent, new PositionComponent(0, 1));
+		var warpDestinationComponent = _world.CreateEntity();
+		_world.AddComponent(warpDestinationComponent, new WarpPortalComponent());
+		_world.AddComponent(warpDestinationComponent, new PositionComponent(2, 1));
+		
+		_testInputProvider.AddInput(Direction.Left);
+		
+		_inputSystem.Execute();
+		_playerDirectionSystem.Execute();
+		_playerMovementSystem.Execute();
+		
+		var playerEntity = _world.GetEntitiesWith<PlayerComponent>().Single();
+		
+		_world.GetComponent<PositionComponent>(playerEntity).Should().Be(new PositionComponent(2, 1));
     }
 }

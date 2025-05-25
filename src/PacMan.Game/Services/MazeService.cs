@@ -4,7 +4,7 @@ using PacMan.Game.Configuration;
 
 namespace PacMan.Game.Services;
 
-public class MazeService(World world, MazeConfiguration mazeConfiguration) : IMazeService
+public class MazeService(World world) : IMazeService
 {
     public bool IsWallAt(int x, int y)
     {
@@ -39,18 +39,23 @@ public class MazeService(World world, MazeConfiguration mazeConfiguration) : IMa
         return false;
     }
     
-    public (int X, int Y) GetWarpDestination((int x, int y) source)
-    {
-        if (mazeConfiguration.WarpCoordinates.Contains(source))
-        {
-            // Find the other warp point in the same row (but different column)
-            var other = mazeConfiguration.WarpCoordinates
-                .FirstOrDefault(coord => coord.Y == source.y && coord.X != source.x);
+	public bool TryGetWarpDestination(int x, int y, out (int x, int y) destination)
+	{
+		// Find all warp entities in the same row
+		var warpEntities = world.GetEntitiesWith<WarpPortalComponent>()
+			.Select(world.GetComponent<PositionComponent>)
+			.Where(pos => pos.Y == y)
+			.ToList();
+		
+		destination = (x, y);
+		if (warpEntities.Count < 2)
+			return false; // No warp or only one warp in this row
 
-            // If found, return it; otherwise, stay in place
-            if (other != default)
-                return other;
-        }
-        return source;
-    }
+		// Find the other warp position in the same row
+		destination = warpEntities
+			.Select(s => (s.X, s.Y))
+			.FirstOrDefault(pos => pos.X != x);
+		
+		return destination != default;
+	}
 }
