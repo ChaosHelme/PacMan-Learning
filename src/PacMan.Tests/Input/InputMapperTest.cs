@@ -24,4 +24,16 @@ public class InputMapperTest
 		InputMapper.MapKey(ConsoleKey.W).Should().Be(InputMapper.MapKey(ConsoleKey.UpArrow));
 		InputMapper.MapKey(ConsoleKey.S).Should().Be(InputMapper.MapKey(ConsoleKey.DownArrow));
 	}
+
+	[Test]
+	public void InputMapper_Returns_Quit_ForQKey()
+	{
+		InputMapper.MapKey(ConsoleKey.Q).Should().Be(Direction.Quit);
+	}
+	
+	[Test]
+	public void InputMapper_Returns_DirectionNone_ForNonMappedKey()
+	{
+		InputMapper.MapKey(ConsoleKey.Y).Should().Be(Direction.None);
+	}
 }
