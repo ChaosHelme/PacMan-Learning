@@ -1,5 +1,7 @@
 # Pac-Man-Learning
 
+[[TOC]]
+
 Welcome to the **Pac-Man-Learning** repository!  
 This project is a modern, testable, and extensible implementation of the classic Pac-Man game in C#, designed for the command line and built to help you learn:
 
@@ -8,6 +10,7 @@ This project is a modern, testable, and extensible implementation of the classic
 - **SOLID principles**
 - **The Entity Component System (ECS) pattern**
 - **Unit and integration testing**
+- **Test-Driven Development (TDD)**
 - **Rich console UI with Spectre.Console**
 
 ---
@@ -18,7 +21,7 @@ This repository is intended as a **learning resource** for developers interested
 - Writing maintainable C# code
 - Applying SOLID and Clean Code principles in real-world scenarios
 - Understanding and implementing the ECS pattern
-- Building testable and modular applications
+- Building testable and modular applications using Test-Driven Development (TDD)
 - Experimenting with console rendering and input handling
 - Leveraging Spectre.Console for beautiful, modern console UIs
 
@@ -31,7 +34,7 @@ This repository is intended as a **learning resource** for developers interested
 - **Clean, SOLID codebase**: Each class and method has a clear, single responsibility
 - **Two rendering modes**: Emoji (colorful, modern) and ASCII (maximum compatibility)
 - **Command-line options**: Choose your render mode at startup
-- **Comprehensive tests**: Unit and integration tests using NUnit and FluentAssertions
+- **Comprehensive tests**:Unit and integration tests using NUnit and AwesomeAssertions, written following TDD practices
 - **Easy extensibility**: Add new features, systems, or components with minimal changes
 
 ---
@@ -42,12 +45,135 @@ By exploring this project, you will:
 
 - **Understand the ECS pattern**: Learn how to separate entities, components, and systems for scalable game (or app) design
 - **Apply SOLID principles**: See how Single Responsibility, Open/Closed, and other SOLID principles work in practice
-- **Write and run tests**: Discover how to write unit, integration, and E2E tests for a console application
+- **Write and run tests using TDD**: Discover how to write unit, integration, and E2E tests for a console application, and how TDD leads to better code quality
 - **Handle command-line arguments**: Learn how to make your apps configurable and user-friendly
 - **Work with console input/output**: See how to create interactive C# console applications
 - **Use Spectre.Console**: Build visually appealing console UIs with modern .NET tools
+- **Practice TDD**: Experience the full TDD cycle—writing failing tests, making them pass, and refactoring with confidence
+
+TDD (Test-Driven Development) is a core practice in this repository.
+You’ll find examples, guides, and real workflow demonstrations (such as the warp tunnel feature) showing how to apply TDD to game features, making the codebase safer, more modular, and easier to extend.
 
 ---
+
+## 🚫 Topics Not Covered in This Repository
+
+While this project provides a comprehensive and clean implementation of the classic Pac-Man game using the Entity Component System (ECS) pattern and modern C# practices, it intentionally does not cover certain advanced or unrelated topics, including but not limited to:
+
+- **Graphics Programming and Rendering:** This project uses a console-based UI powered by Spectre.Console and does not delve into graphics programming, GPU rendering, or game engine graphics pipelines.
+- **Advanced Game Physics:** There is no physics engine or complex collision detection beyond simple grid-based movement and collision.
+- **Networking and Multiplayer:** The game is single-player and does not include any networking or multiplayer features.
+- **Audio Programming:** Sound effects or music are not implemented.
+- **Artificial Intelligence Beyond Basic Ghost Movement:** The ghost AI is basic and does not include advanced pathfinding or machine learning.
+- **Platform-Specific Optimizations:** The code is designed for cross-platform console applications and does not include platform-specific optimizations or native integrations.
+
+This focus allows the repository to remain a clear and educational resource for learning ECS, clean code, and C# console application development.
+
+---
+
+## 🚦 Test-Driven Development (TDD) in This Repository
+### What is TDD?
+Test-Driven Development (TDD) is a software development approach where you:
+
+- Write a failing test that describes a small piece of desired functionality.
+
+- Write the minimum code needed to make the test pass.
+
+- Refactor the code, keeping all tests green.
+
+- Repeat for each new feature or improvement.
+
+TDD helps you:
+
+- Focus on clear, testable requirements.
+
+- Catch bugs early.
+
+- Encourage modular, maintainable code.
+
+- Build confidence to refactor and extend your codebase.
+
+## 🏃 TDD in Action: Implementing the Warp Feature
+Let's demonstrate TDD using the warp tunnel feature from Pac-Man.
+
+### Step 1: Write a Failing Test
+First, we write a test that describes the desired behavior:
+When the player or a ghost moves onto a warp tile, they should appear at the matching warp tile on the same row.
+
+For this, we need to add some logic to the `MazeService`.
+
+Start by implementing the test, which will fail, because we didn't implement `MazeService.TryGetWarpDestination` yet.
+
+```csharp
+[Test]
+public void TryGetWarpDestination_Returns_CorrectDestination_WhenWarpPortalContainsSourceAndDestination()
+{
+    // Arrange: Create world, add two warp entities in row 5 at (0,5) and (27,5)
+    var leftWarp = _world.CreateEntity();
+    _world.AddComponent(leftWarp, new WarpPortalComponent());
+    _world.AddComponent(leftWarp, new PositionComponent(0, 5));
+    var rightWarp = _world.CreateEntity();
+    _world.AddComponent(rightWarp, new WarpPortalComponent());
+    _world.AddComponent(rightWarp, new PositionComponent(27, 5));
+
+    // Place player at (0,5)
+    var player = _world.CreateEntity();
+    _world.AddComponent(player, new PositionComponent(0, 5));
+
+    var mazeService = new MazeService(_world);
+
+    // Act: Simulate moving left into the warp
+    mazeService.TryGetWarpDestination(0, 5, out var newPos);
+
+    // Assert: Player should appear at (27,5)
+    newPos.Should().Be((27, 5));
+}
+```
+
+### Step 2: Implement the Minimum Code to Pass the Test
+Now, implement the warp logic in MazeService so the tests pass:
+
+```csharp
+public bool TryGetWarpDestination(int x, int y, out (int x, int y) destination)
+{
+    // Find all warp entities in the same row
+    var warpEntities = world.GetEntitiesWith<WarpPortalComponent>()
+        .Select(world.GetComponent<PositionComponent>)
+        .Where(pos => pos.Y == y)
+        .ToList();
+    
+    destination = (x, y);
+    if (warpEntities.Count < 2)
+        return false; // No warp or only one warp in this row
+
+    // Find the other warp position in the same row
+    destination = warpEntities
+        .Select(s => (s.X, s.Y))
+        .FirstOrDefault(pos => pos.X != x);
+    
+    return destination != default;
+}
+```
+
+Run the tests again—they should now pass (green).
+
+### Step 3: Refactor and Extend
+With the tests green, you can safely refactor or extend the feature, knowing the tests will catch regressions.
+
+## 🧑‍💻 How to Practice TDD in This Repository
+- Add a test for every new feature or bug fix before writing the implementation.
+
+- Run the tests to see them fail.
+
+- Write the minimal code to make the test pass.
+
+- Refactor as needed, keeping all tests green.
+
+- Commit your tests and implementation together.
+
+This workflow helps ensure robust, maintainable, and well-documented code.
+
+TDD is not just a technique—it's a mindset that leads to better design and higher confidence in your code. Give it a try as you contribute or experiment with this Pac-Man project!
 
 ## 🖥️ Console UI Powered by Spectre.Console
 
@@ -95,7 +221,7 @@ graph TD
 
 ---
 
-## 🗺️ Maze Configuration with using a text simple text file
+## 🗺️ Maze Configuration using a simple text file
 
 The structure and layout of the Pac-Man maze in this project are defined in an external, human-readable file called `maze.txt`. This file allows you to easily design, modify, or extend the maze without changing any code.
 
@@ -198,7 +324,7 @@ The workflow is defined in [dotnet.yaml](/.github/workflows/dotnet.yml)
     dotnet test src/
     ```
 
-    - The project includes unit and integration tests using [NUnit](https://nunit.org/) and [FluentAssertions](https://fluentassertions.com/).
+    - The project includes unit and integration tests using [NUnit](https://nunit.org/) and [AwesomeAssertions](https://fluentassertions.com/).
 
 ---
 
@@ -216,8 +342,6 @@ This project is a great starting point for learning, but there are many ways to 
   Implement unique movement patterns for each ghost (Blinky, Pinky, Inky, Clyde) to mimic their original behaviors.
 - **Bonus Fruits & Items**  
   Occasionally spawn bonus items (fruits) for extra points.
-- **Warp Tunnels**  
-  Let Pac-Man and ghosts warp around the sides of the maze.
 - **Multiple Levels & Increasing Difficulty**  
   Advance to new mazes or increase ghost speed as the player progresses.
 - **Cutscenes/Intermissions**  
@@ -278,7 +402,7 @@ Feel free to [contribute](#-contributing) your own ideas or improvements!
 - [Clean Code by Robert C. Martin](https://www.oreilly.com/library/view/clean-code/9780136083238/)
 - [Spectre Console Documentation](https://spectreconsole.net/)
 - [NUnit Documentation](https://docs.nunit.org/)
-- [FluentAssertions Documentation](https://fluentassertions.com/)
+- [AwesomeAssertions Documentation](https://fluentassertions.com/)
 
 ---
 
