@@ -2,6 +2,7 @@ using FluentAssertions;
 using PacMan.ECS;
 using PacMan.Game;
 using PacMan.Game.Components;
+using PacMan.Game.Configuration;
 using PacMan.Game.Services;
 using PacMan.Game.Systems;
 
@@ -20,7 +21,7 @@ public class PlayerScoreAndLifeIntegrationTests
     public void Setup()
     {
         _world = new World();
-        _mazeService = new MazeService(_world);
+        _mazeService = new MazeService(_world, new MazeConfiguration());
         _playerMoveSystem = new PlayerMovementSystem(_world, _mazeService);
         _logicSystem = new GameLogicSystem(_world);
 

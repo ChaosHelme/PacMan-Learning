@@ -21,5 +21,12 @@ public class MazeLoaderSystem(World world, MazeConfiguration mazeConfiguration) 
             world.AddComponent(dot, new DotComponent());
             world.AddComponent(dot, new PositionComponent(dotCoordinate.X, dotCoordinate.Y));
         }
+
+        foreach (var warpCoordinate in mazeConfiguration.WarpCoordinates)
+        {
+            var warpPortal = world.CreateEntity();
+            world.AddComponent(warpPortal, new WarpPortalComponent());
+            world.AddComponent(warpPortal, new PositionComponent(warpCoordinate.X, warpCoordinate.Y));
+        }
     }
 }

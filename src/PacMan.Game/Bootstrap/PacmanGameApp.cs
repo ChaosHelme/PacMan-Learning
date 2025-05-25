@@ -38,7 +38,7 @@ public class PacmanGameApp
     public async Task Start(CancellationTokenSource cts)
     {
         IGameArtAssets gameArtAssets = _renderMode == RenderMode.Emoji ? new EmojiConsoleAssets() : new AsciiConsoleAssets();
-        var mazeConfiguration = MazeConfigurationLoader.LoadMazeConfiguration(Path.Combine(Directory.GetCurrentDirectory(), "maze.txt"), _fileService);
+        var mazeConfiguration = MazeConfigurationLoader.LoadMazeConfiguration(Path.Combine(AppContext.BaseDirectory, "maze.txt"), _fileService);
         var gameRunner = new GameRunner(_renderingProvider, _inputProvider, gameArtAssets, mazeConfiguration, cts);
 
         // When emoji mode is active, we need to ensure to set the output encoding to UTF8

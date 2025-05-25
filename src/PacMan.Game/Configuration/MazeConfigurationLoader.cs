@@ -26,6 +26,9 @@ public static class MazeConfigurationLoader
                     case '.':
                         config.DotCoordinates.Add((x, y));
                         break;
+                    case '@':
+                        config.WarpCoordinates.Add((x, y));
+                        break;
                 }
             }
         }

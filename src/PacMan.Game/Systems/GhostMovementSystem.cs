@@ -24,10 +24,18 @@ public class GhostMovementSystem(World world, IMazeService mazeService, IRandomN
                 Direction.Down => pos with {Y = pos.Y + 1},
                 _ => pos
             };
-            if (mazeService.IsWalkable(newPos.X, newPos.Y))
+            
+            var isWarpPortal = mazeService.IsWarpPortal(newPos.X, newPos.Y);
+            var isWalkable = mazeService.IsWalkable(newPos.X, newPos.Y);
+            var finalPosition = (pos.X, pos.Y);
+            if (isWalkable && !isWarpPortal)
             {
-                world.ReplaceComponent(ghost, newPos);
+                finalPosition = (newPos.X, newPos.Y);
+            } else if (isWalkable && isWarpPortal)
+            {
+                finalPosition = mazeService.GetWarpDestination((newPos.X, newPos.Y));
             }
+            world.ReplaceComponent(ghost, new PositionComponent(finalPosition.X, finalPosition.Y));
         }
     }
 }

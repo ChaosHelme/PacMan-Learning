@@ -2,6 +2,7 @@ using FluentAssertions;
 using PacMan.ECS;
 using PacMan.Game;
 using PacMan.Game.Components;
+using PacMan.Game.Configuration;
 using PacMan.Game.Services;
 using PacMan.Game.Systems;
 using PacMan.Tests.Services;
@@ -20,7 +21,7 @@ public class GhostMovementSystemTests
     public void Setup()
     {
         _world = new World();
-        _mazeService = new MazeService(_world);
+        _mazeService = new MazeService(_world, new MazeConfiguration());
         _randomNumberService = new TestRandomNumberService();
         _moveSystem = new GhostMovementSystem(_world, _mazeService, _randomNumberService);
     }

@@ -95,6 +95,49 @@ graph TD
 
 ---
 
+## 🗺️ Maze Configuration with using a text simple text file
+
+The structure and layout of the Pac-Man maze in this project are defined in an external, human-readable file called `maze.txt`. This file allows you to easily design, modify, or extend the maze without changing any code.
+
+### How `maze.txt` Works
+
+Each line in `maze.txt` represents a row in the maze. Each character in a line represents a cell at a specific (x, y) coordinate in the grid. The file is parsed at game startup, and the contents are used to generate the maze entities and features via the ECS.
+
+#### **Legend: Maze Symbols**
+
+| Symbol  | Meaning                                                        |
+|---------|----------------------------------------------------------------|
+| `#`     | Wall                                                           |
+| `.`     | Dot (collectable)                                              |
+| `@`     | Warp tunnel (teleport from one `@` to another in the same row) |
+| (space) | Empty cell (walkable, no dot)                                  |
+| other   | (Reserved for future features, e.g. power pellets)             |
+
+#### **Example `maze.txt`**
+
+See [maze.txt](src/PacMan.Game/maze.txt)
+
+#### **How the Maze is Used**
+
+- **Walls** (`#`): Entities with a `WallComponent` and a `PositionComponent` are created at these positions. These block movement.
+- **Dots** (`.`): Entities with a `DotComponent` and a `PositionComponent` are created at these positions. These are collectable by the player.
+- **Warp Tunnels** (`@`): When the player or a ghost moves onto a warp tunnel, they are instantly moved to the matching `@` in the same row, allowing classic Pac-Man wrap-around movement.
+- **Empty Spaces**: Open paths for movement, no entity is created.
+
+#### **Extending the Maze**
+
+You can edit `maze.txt` to:
+- Change the maze shape and size.
+- Add or remove dots and walls.
+- Place warp tunnels (`@`) wherever you want wrap-around movement.
+- Reserve other symbols for future features (e.g., power pellets, fruits, ghost house).
+
+#### **How the File is Loaded**
+
+At game startup, the maze file is read by the `MazeConfigurationLoader`, which parses each character and records the positions of walls, dots, and warps. These positions are then used to create the corresponding entities in the ECS world.
+
+---
+
 ## ⚙️ Continuous Integration with GitHub Actions
 
 This project uses **GitHub Actions** for automated Continuous Integration (CI).  

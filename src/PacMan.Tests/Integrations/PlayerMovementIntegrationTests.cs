@@ -2,6 +2,7 @@ using FluentAssertions;
 using PacMan.ECS;
 using PacMan.Game;
 using PacMan.Game.Components;
+using PacMan.Game.Configuration;
 using PacMan.Game.Services;
 using PacMan.Game.Systems;
 
@@ -25,7 +26,7 @@ public class PlayerMovementIntegrationTests
         _inputEntity = _world.CreateEntity();
         _world.AddComponent(_inputEntity, new InputComponent(Direction.None));
 
-        _mazeService = new MazeService(_world);
+        _mazeService = new MazeService(_world, new MazeConfiguration());
         _testInputProvider = new TestInputProvider([]);
         _inputSystem = new InputSystem(_world, _testInputProvider);
         _playerDirectionSystem = new PlayerDirectionSystem(_world);
@@ -84,5 +85,13 @@ public class PlayerMovementIntegrationTests
         var playerEntity = _world.GetEntitiesWith<PlayerComponent>().Single();
         
         _world.GetComponent<PositionComponent>(playerEntity).Should().Be(new PositionComponent(1, 1));
+    }
+    
+    [Test]
+    public void MovePlayer_IntoWarpPortal_ShouldSpawnPlayer_AtTheOppositePosition()
+    {
+        var warpSourceComponent = _world.CreateEntity();
+        _world.AddComponent(warpSourceComponent, new WarpPortalComponent());
+        _world.AddComponent(warpSourceComponent, new PositionComponent(0, 1));
     }
 }

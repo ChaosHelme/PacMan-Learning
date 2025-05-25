@@ -1,6 +1,7 @@
 using FluentAssertions;
 using PacMan.ECS;
 using PacMan.Game.Components;
+using PacMan.Game.Configuration;
 using PacMan.Game.Services;
 
 namespace PacMan.Tests.Services
@@ -15,7 +16,7 @@ namespace PacMan.Tests.Services
         public void SetUp()
         {
             _world = new World();
-            _mazeService = new MazeService(_world);
+            _mazeService = new MazeService(_world, new MazeConfiguration());
         }
 
         [Test]

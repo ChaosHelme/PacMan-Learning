@@ -18,7 +18,7 @@
     <ItemGroup>
       <None Remove="maze.txt" />
       <Content Include="maze.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
     </ItemGroup>
 
