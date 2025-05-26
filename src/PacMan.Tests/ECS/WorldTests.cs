@@ -65,21 +65,14 @@ public class WorldTests
         _world.HasComponent<PlayerComponent>(entity).Should().BeFalse();
     }
 
-    [Test]
-    public void GetUniqueComponentOwner_Throws_EntityDoesNotExistsException_WhenNoEntityContainsUniqueComponent()
-    {
-        Assert.Throws<EntityDoesNotExistsException>(() => _world.GetUniqueComponentOwner<PlayerComponent>());
-    }
-
-    [Test]
-    public void AddUniqueComponent_Throws_InvalidOperationException_WhenUniqueComponentAlreadyExistsOnAnyEntity()
-    {
-        var e1 = _world.CreateEntity();
-        _world.AddComponent(e1, new PlayerComponent());
-        var e2 = _world.CreateEntity();
-        
-        Assert.Throws<InvalidOperationException>(() => _world.AddComponent(e2, new PlayerComponent()));
-    }
+	[Test]
+	public void AccessNonExistingComponent_ThrowsKeyNotFoundException()
+	{
+		var world = new World();
+		var entity = world.CreateEntity();
+		
+		Assert.Throws<KeyNotFoundException>(() => world.GetComponent<PositionComponent>(entity));
+	}
 
 	[Test]
 	public void RemoveUniqueComponent_RemovesComponent()

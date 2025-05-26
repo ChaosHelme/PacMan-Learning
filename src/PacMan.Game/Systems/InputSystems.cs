@@ -8,7 +8,7 @@ public class InputSystem(World world, IInputProvider inputProvider) : IExecuteSy
 {
     public void Execute()
     {
-        var inputEntity = world.GetUniqueComponentOwner<InputComponent>();
+        var inputEntity = world.GetEntitiesWith<InputComponent>().Single();
         world.ReplaceComponent(inputEntity, new InputComponent(inputProvider.GetDirection()));
     }
 }

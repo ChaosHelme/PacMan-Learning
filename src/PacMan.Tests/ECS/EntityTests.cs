@@ -7,10 +7,10 @@ namespace PacMan.Tests.ECS;
 public class EntityTests
 {
     [Test]
-    public void Entities_WithSameId_AreEqual()
+    public void Entities_WithSameId_AndVersion_AreEqual()
     {
-        var e1 = new Entity(42);
-        var e2 = new Entity(42);
+        var e1 = new Entity(42, 1);
+        var e2 = new Entity(42, 1);
 
         e1.Should().Be(e2);
         (e1 == e2).Should().BeTrue();
@@ -19,11 +19,24 @@ public class EntityTests
         e1.Equals((object) e2).Should().BeTrue();
     }
 
+	[Test]
+	public void Entities_WithSameId_DifferentVersion_AreNotEqual()
+	{
+		var e1 = new Entity(42, 1);
+		var e2 = new Entity(42, 2);
+		
+		e1.Should().NotBe(e2);
+		(e1 == e2).Should().BeFalse();
+		(e1 != e2).Should().BeTrue();
+		e1.Equals(e2).Should().BeFalse();
+		e1.Equals((object) e2).Should().BeFalse();
+	}
+
     [Test]
     public void Entities_WithDifferentIds_AreNotEqual()
     {
-        var e1 = new Entity(1);
-        var e2 = new Entity(2);
+        var e1 = new Entity(1, 1);
+        var e2 = new Entity(2, 1);
 
         e1.Should().NotBe(e2);
         (e1 == e2).Should().BeFalse();
@@ -35,25 +48,16 @@ public class EntityTests
     [Test]
     public void Equals_OnNonEntityObject_ReturnsFalse()
     {
-        var e1 = new Entity(1);
+        var e1 = new Entity(1, 1);
         var nonEntity = new object();
         
         e1.Equals(nonEntity).Should().BeFalse();
     }
 
     [Test]
-    public void GetHashCode_ReturnsId()
-    {
-        var id = 123;
-        var entity = new Entity(id);
-
-        entity.GetHashCode().Should().Be(id);
-    }
-
-    [Test]
     public void Equals_WithNullObject_ReturnsFalse()
     {
-        var entity = new Entity(1);
+        var entity = new Entity(1, 1);
 
         entity.Equals(null).Should().BeFalse();
     }
@@ -70,9 +74,9 @@ public class EntityTests
     public void Entities_CanBeUsedInHashSet()
     {
         var set = new HashSet<Entity>();
-        var e1 = new Entity(10);
-        var e2 = new Entity(10);
-        var e3 = new Entity(11);
+        var e1 = new Entity(10, 1);
+        var e2 = new Entity(10, 1);
+        var e3 = new Entity(11, 2);
 
         set.Add(e1);
         set.Add(e2); // Should not add duplicate

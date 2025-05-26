@@ -1,19 +1,3 @@
 namespace PacMan.ECS;
 
-public readonly struct Entity(int id) : IEquatable<Entity>
-{
-    public int Id { get; } = id;
-    public override int GetHashCode() => Id;
-    public override bool Equals(object? obj) => obj is Entity e && e.Id == Id;
-    public bool Equals(Entity other) => Id == other.Id;
-    
-    public static bool operator ==(Entity left, Entity right)
-    {
-        return left.Equals(right);
-    }
-    
-    public static bool operator !=(Entity left, Entity right)
-    {
-        return !(left == right);
-    }
-}
+public readonly record struct Entity(int Id, int Version);
